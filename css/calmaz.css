@@ -81,7 +81,7 @@ nav.main-nav { background: var(--cream) !important; }
   gap: 20px;
 }
 .on-air-badge {
-  background: var(--accent);
+  background: #7b2d80;
   color: #fff;
   font-size: 10px;
   font-weight: 800;
@@ -92,8 +92,8 @@ nav.main-nav { background: var(--cream) !important; }
   flex-shrink: 0;
 }
 .on-air-show { font-size: 15px; font-weight: 700; }
-.on-air-host { font-size: 13px; color: rgba(255,255,255,.65); margin-left: 0; }
-.on-air-host:not(:empty)::before { content: ' · '; color: rgba(255,255,255,.35); }
+.on-air-host { font-size: 15px; font-weight: 700; color: rgba(255,255,255,.85); margin-left: 0; }
+.on-air-host:not(:empty)::before { content: ' · '; font-weight: 400; color: rgba(255,255,255,.4); }
 .on-air-time { font-size: 11px; color: rgba(255,255,255,.4); margin-left: auto; }
 
 /* Section headers */

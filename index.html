@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="images/logo-calmaz.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/calmaz-base.css?v=29" />
-  <link rel="stylesheet" href="css/calmaz.css?v=37" />
+  <link rel="stylesheet" href="css/calmaz.css?v=38" />
   <style id="nav-critical">
     nav.main-nav{background:#fff7ec !important;position:relative !important;top:auto !important;z-index:auto !important;}
     .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:150px;}
@@ -211,7 +211,15 @@
           if (typeof setStickyOffsets === 'function') setTimeout(setStickyOffsets, 50);
         }).catch(function(){});
     }
-    setTimeout(updateHomeOnAirBar, 200);
+    // Wait for layout.js to inject the bar element, then run
+    function waitForBarAndRun() {
+      if (document.getElementById('on-air-bar')) {
+        updateHomeOnAirBar();
+      } else {
+        setTimeout(waitForBarAndRun, 100);
+      }
+    }
+    waitForBarAndRun();
     if (!window.CALMAZ_HOME_ON_AIR_TIMER) window.CALMAZ_HOME_ON_AIR_TIMER = setInterval(updateHomeOnAirBar, 60000);
     window.addEventListener('focus', updateHomeOnAirBar);
     document.addEventListener('visibilitychange', function(){ if (!document.hidden) updateHomeOnAirBar(); });
