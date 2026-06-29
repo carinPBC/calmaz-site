@@ -344,7 +344,7 @@
           + '<span class="on-air-host" id="on-air-host"></span>'
           + '<span class="on-air-time" id="on-air-time"></span>'
           + '<div style="display:flex;gap:10px;margin-left:auto;flex-shrink:0;align-items:center;">'
-          + '<a href="#" data-listen="calmaz" style="display:inline-flex;align-items:center;gap:6px;background:#487ea6;color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;">&#9654; Listen Live</a>'
+          + '<a href="#" data-listen="calmaz" style="display:inline-flex;align-items:center;gap:6px;background:#a04da6;color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;">&#9654; Listen Live</a>'
           + '<button id="watch-live-btn" style="display:none;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap;border:1px solid rgba(255,255,255,.3);">&#128250; Watch Live</button>'
           + '</div>'
           + '</div>';
@@ -463,45 +463,22 @@
     // fallback groups same as homepage
     var todayGroup = dayGroups[day] || 'mon';
 
-    fetch(API_URL + '/api/schedule/calmaz')
+    fetch(API_URL + '/api/recent-tracks/kahm?ts=' + Date.now())
       .then(function(r) { return r.json(); })
-      .then(function(data) {
-        var slots = data.slots || [];
-        var current = slots.find(function(sl) {
-          return sl.day_group === todayGroup && sl.start_hour <= nowH && sl.end_hour > nowH;
-        });
-        if (!current && todayGroup === 'mon') {
-          current = slots.find(function(sl) {
-            return sl.day_group === 'tue-fri' && sl.start_hour <= nowH && sl.end_hour > nowH;
-          });
-        }
+      .then(function(tracks) {
         var bar = document.getElementById('on-air-bar');
-        var watchBtn = document.getElementById('watch-live-btn');
-        if (!current) {
-          if (bar) { bar.style.display = 'none'; setStickyOffsets(); }
-          if (watchBtn) { watchBtn.style.display = 'none'; watchBtn.removeAttribute('data-video-url'); }
-          window.CALMAZ_CURRENT_VIDEO_URL = null;
-          return;
-        }
-        if (current) {
-          var showEl = document.getElementById('on-air-show');
-          var timeEl = document.getElementById('on-air-time');
-          if (bar) { bar.style.display = 'flex'; setStickyOffsets(); }
-          if (showEl) showEl.textContent = current.name;
-          if (timeEl) timeEl.textContent = fmtH(current.start_hour) + ' – ' + fmtH(current.end_hour);
-          // Watch Live button only when show has a video_url
-          if (watchBtn) {
-            if (current.video_url) {
-              watchBtn.style.display = 'inline-flex';
-              watchBtn.setAttribute('data-video-url', current.video_url);
-              window.CALMAZ_CURRENT_VIDEO_URL = current.video_url; // shared ref for player.js
-            } else {
-              watchBtn.style.display = 'none';
-              watchBtn.removeAttribute('data-video-url');
-              window.CALMAZ_CURRENT_VIDEO_URL = null;
-            }
-          }
-        }
+        if (!bar) return;
+        if (!tracks || !tracks.length) { bar.style.display = 'none'; setStickyOffsets(); return; }
+        var t = tracks[0];
+        function tc(s) { return (s||'').toLowerCase().replace(/\w/g, function(c){ return c.toUpperCase(); }); }
+        var showEl = document.getElementById('on-air-show');
+        var hostEl = document.getElementById('on-air-host');
+        var timeEl = document.getElementById('on-air-time');
+        if (showEl) showEl.textContent = tc(t.title || '');
+        if (hostEl) hostEl.textContent = tc(t.artist || '');
+        if (timeEl) timeEl.textContent = t.localtime || '';
+        bar.style.display = 'flex';
+        setStickyOffsets();
       })
       .catch(function() {});
   }
