@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employment — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" /><link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:110px;}
+    .nav-logo img{height:100px;width:auto;object-fit:contain;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}}
+  </style>
+  <style>
+    body{background:#f8f9fa !important;}
+    .emp-wrap{background:#f8f9fa !important;}
+
+    .emp-wrap{max-width:860px;margin:0 auto;padding:48px 32px;}
+    .emp-intro{font-size:15px;color:#546e7a;line-height:1.8;margin-bottom:40px;padding-bottom:32px;border-bottom:2px solid #e8ecf0;}
+    .job-card{background:#fff;border-radius:10px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;}
+    .job-station{font-size:11px;font-weight:800;color:#487ea6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+    .job-title{font-size:20px;font-weight:800;color:#05254c;margin-bottom:8px;}
+    .job-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+    .job-badge{background:#f4f6f8;color:#546e7a;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+    .job-desc{font-size:14px;color:#444;line-height:1.7;margin-bottom:16px;}
+    .job-apply{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#05254c;color:#fff;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s;}
+    .job-apply:hover{background:#0a2239;}
+    .no-openings{text-align:center;padding:60px 0;color:#546e7a;}
+    .no-openings h3{font-size:20px;font-weight:700;color:#05254c;margin-bottom:8px;}
+    @media(max-width:640px){.emp-wrap{padding:32px 16px;}}
+  </style>
+</head>
+<body style="background:#f8f9fa;">
+  <div id="site-header"></div>
+  <div class="emp-wrap">
+    <h1 style="font-size:clamp(24px,3vw,36px);font-weight:900;color:#05254c;text-transform:uppercase;letter-spacing:.03em;margin-bottom:16px;">Employment Opportunities</h1>
+    <p class="emp-intro">
+      Prescott Broadcasting, LLC is an equal opportunity employer committed to a diverse and inclusive workplace.
+      We do not discriminate on the basis of race, color, religion, sex, national origin, age, disability, or any other
+      characteristic protected by law. Current openings at our stations are listed below.
+    </p>
+    <div id="job-listings">
+      <div style="text-align:center;padding:40px 0;color:#546e7a;">Loading...</div>
+    </div>
+  </div>
+  <div id="site-footer"></div>
+  <script src="../js/theme.js"></script>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+  (function() {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    fetch(API + '/api/jobs?status=open')
+      .then(function(r) { return r.json(); })
+      .then(function(jobs) {
+        var el = document.getElementById('job-listings');
+        if (!el) return;
+        if (!jobs.length) {
+          el.innerHTML = '<div class="no-openings"><h3>No Current Openings</h3><p>There are no open positions at this time. Please check back later or send your resume to <a href="mailto:jobs@prescottbroadcasting.com">info@prescottbroadcasting.com</a> for future consideration.</p></div>';
+          return;
+        }
+        el.innerHTML = jobs.map(function(j) {
+          var applyBtn = j.apply_url
+            ? '<a href="' + j.apply_url + '" target="_blank" rel="noopener" class="job-apply">Apply Now &rsaquo;</a>'
+            : '<a href="mailto:jobs@prescottbroadcasting.com" class="job-apply">Apply by Email &rsaquo;</a>';
+          return '<div class="job-card">'
+            + '<div class="job-station">' + (j.station || 'Prescott Broadcasting')  + '</div>'
+            + '<div class="job-title">' + j.title + '</div>'
+            + '<div class="job-meta">'
+            + (j.department ? '<span class="job-badge">' + j.department + '</span>' : '')
+            + '<span class="job-badge">' + (j.employment_type || 'Full-time') + '</span>'
+            + (j.posted_date ? '<span class="job-badge">Posted ' + new Date(j.posted_date + 'T12:00:00').toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}) + '</span>' : '')
+            + '</div>'
+            + (j.description ? '<div class="job-desc">' + j.description.replace(/\n/g,'<br>') + '</div>' : '')
+            + applyBtn
+            + '</div>';
+        }).join('');
+      }).catch(function() {
+        var el = document.getElementById('job-listings');
+        if (el) el.innerHTML = '<div class="no-openings"><h3>No Current Openings</h3><p>Please check back soon.</p></div>';
+      });
+  })();
+  </script>
+</body style="background:#f8f9fa;">
+</html>
+<!-- deploy nudge -->

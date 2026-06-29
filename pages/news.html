@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+    .news-controls { display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px; }
+    .date-nav { display:flex;align-items:center;gap:8px; }
+    .date-btn { padding:8px 14px;background:#fff;border:1.5px solid #e8ecf0;border-radius:8px;font-size:18px;cursor:pointer;transition:background .15s; }
+    .date-btn:hover { background:#f4f6f8; }
+    .date-btn:disabled { opacity:.4;cursor:default; }
+    .date-label { font-size:14px;font-weight:700;color:#05254c;min-width:200px;text-align:center; }
+    .search-box { flex:1;min-width:200px;padding:10px 14px;border:1.5px solid #e8ecf0;border-radius:8px;font-size:14px;font-family:inherit;outline:none; }
+    .search-box:focus { border-color:#05254c; }
+    .news-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px; }
+    .news-card { background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:pointer; }
+    .news-card:hover { transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.12); }
+    .news-card-img { width:100%;height:160px;object-fit:contain;background:#f4f6f8;display:block; }
+    .news-card-body { padding:16px; }
+    .news-cat { font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#487ea6;margin-bottom:6px; }
+    .news-headline { font-size:15px;font-weight:700;color:#05254c;line-height:1.4;margin-bottom:8px; }
+    .news-meta { font-size:11px;color:#90a4ae;display:flex;gap:8px;align-items:center; }
+    .news-station { background:#e3f2fd;color:#1565c0;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase; }
+    .no-results { color:#546e7a;font-size:14px;padding:40px 0;text-align:center; }
+    @media(max-width:640px){ .news-grid{grid-template-columns:1fr;} .date-label{min-width:140px;font-size:12px;} }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  </div>
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+  </div>
+  <div class="page-hero">
+    <h1>News</h1>
+    <p>Local news from Prescott, Yavapai County, and Northern Arizona.</p>
+  </div>
+
+
+  <div class="content-wrap">
+    <div class="news-controls">
+      <div class="date-nav">
+        <button class="date-btn" id="prev-date">&#8249;</button>
+        <div class="date-label" id="date-label">Loading…</div>
+        <button class="date-btn" id="next-date">&#8250;</button>
+        <div style="position:relative;display:inline-block;">
+          <button style="padding:8px 14px;background:#fff;border:1.5px solid #e8ecf0;border-radius:8px;font-size:18px;cursor:pointer;line-height:1;" id="cal-picker-btn" title="Pick a date">&#128197;</button>
+          <div id="cal-picker-popup" style="display:none;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#fff;border:1.5px solid #e8ecf0;border-radius:10px;padding:14px;box-shadow:0 4px 20px rgba(0,0,0,.12);z-index:9999;min-width:240px;"></div>
+        </div>
+        <button style="padding:8px 14px;background:#fff;border:1.5px solid #e8ecf0;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;" id="all-dates-btn">All Dates</button>
+      </div>
+      <input class="search-box" id="news-search" placeholder="Search headlines, categories…" />
+    </div>
+    <div id="news-grid" class="news-grid">
+      <div class="no-results">Loading…</div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+  (function() {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    var allNewsItems = [];
+    var newsDatesList = [];
+    var currentDateIdx = 0;
+    var showingAll = false;
+    var searchTimer = null;
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+    function renderNews(items) {
+      var grid = document.getElementById('news-grid');
+      if (!grid) return;
+      if (!items.length) {
+        grid.innerHTML = '<div class="no-results">No news articles found for this date.</div>';
+        return;
+      }
+      grid.innerHTML = items.map(function(n) {
+        var img = n.image
+          ? (n.image.startsWith('http') ? n.image : (n.image.startsWith('uploads/') ? API + '/' + n.image : '../' + n.image))
+          : '../images/news-placeholder.png';
+        var date = n.published_at ? new Date(n.published_at.slice(0,10)+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+        var station = '';
+        return '<a class="news-card" href="article.html?id=' + n.id + '" style="text-decoration:none;color:inherit;display:block;">'
+          + '<img class="news-card-img" src="' + img + '" alt="' + (n.headline||'').replace(/"/g,'&quot;') + '" onerror="this.src=&quot;../images/news-placeholder.png&quot;" />'
+          + '<div class="news-card-body">'
+          + (n.category ? '<div class="news-cat">' + n.category + '</div>' : '')
+          + '<div class="news-headline">' + (n.headline||'') + '</div>'
+          + '<div class="news-meta"><span>' + date + '</span></div>'
+          + '</div></a>';
+      }).join('');
+    }
+
+    function updateDateLabel() {
+      var label = document.getElementById('date-label');
+      var prevBtn = document.getElementById('prev-date');
+      var nextBtn = document.getElementById('next-date');
+      if (!label) return;
+      if (showingAll) {
+        label.textContent = 'All Dates';
+        if (prevBtn) prevBtn.disabled = false;
+        if (nextBtn) nextBtn.disabled = false;
+        return;
+      }
+      var d = newsDatesList[currentDateIdx];
+      if (!d) return;
+      var dt = new Date(d + 'T12:00:00Z');
+      label.textContent = dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+      if (prevBtn) prevBtn.disabled = currentDateIdx >= newsDatesList.length - 1;
+      if (nextBtn) nextBtn.disabled = currentDateIdx <= 0;
+    }
+
+    function showDate(idx) {
+      showingAll = false;
+      currentDateIdx = Math.max(0, Math.min(idx, newsDatesList.length - 1));
+      var d = newsDatesList[currentDateIdx];
+      renderNews(allNewsItems.filter(function(n) { return (n.published_at||'').startsWith(d); }));
+      updateDateLabel();
+    }
+
+    function showAll() {
+      showingAll = true;
+      renderNews(allNewsItems);
+      updateDateLabel();
+    }
+
+    // ── CALENDAR PICKER ──────────────────────────────────────
+    function buildCalendarPicker(datesWithContent) {
+      var btn = document.getElementById('cal-picker-btn');
+      var popup = document.getElementById('cal-picker-popup');
+      if (!btn || !popup) return;
+      var dateSet = {};
+      datesWithContent.forEach(function(d) { dateSet[d] = true; });
+      var pickerYear, pickerMonth;
+
+      function renderPicker() {
+        var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var firstDay = new Date(pickerYear, pickerMonth, 1).getDay();
+        var daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+        var today = new Date();
+        var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+          + '<button onclick="pickerPrev()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#05254c;">&#8249;</button>'
+          + '<strong style="font-size:13px;color:#05254c;">' + monthNames[pickerMonth] + ' ' + pickerYear + '</strong>'
+          + '<button onclick="pickerNext()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#05254c;">&#8250;</button>'
+          + '</div>'
+          + '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;">';
+        ['S','M','T','W','T','F','S'].forEach(function(d) {
+          html += '<div style="font-size:10px;font-weight:700;color:#90a4ae;padding:3px 0;">' + d + '</div>';
+        });
+        for (var i = 0; i < firstDay; i++) html += '<div></div>';
+        for (var day = 1; day <= daysInMonth; day++) {
+          var dateStr = pickerYear + '-' + pad(pickerMonth+1) + '-' + pad(day);
+          var hasContent = dateSet[dateStr];
+          var isToday = today.getFullYear()===pickerYear && today.getMonth()===pickerMonth && today.getDate()===day;
+          var style = 'padding:4px 2px;border-radius:4px;font-size:12px;cursor:pointer;';
+          if (hasContent) style += 'background:#487ea6;color:#fff;font-weight:700;';
+          else style += 'color:#546e7a;';
+          if (isToday && !hasContent) style += 'border:1.5px solid #05254c;';
+          html += '<div style="' + style + '" onclick="pickerSelectDate(\'' + dateStr + '\',' + (hasContent?'true':'false') + ')">' + day + '</div>';
+        }
+        html += '</div>';
+        popup.innerHTML = html;
+      }
+
+      window.pickerPrev = function() { pickerMonth--; if(pickerMonth<0){pickerMonth=11;pickerYear--;} renderPicker(); };
+      window.pickerNext = function() { pickerMonth++; if(pickerMonth>11){pickerMonth=0;pickerYear++;} renderPicker(); };
+      window.pickerSelectDate = function(dateStr, hasContent) {
+        popup.style.display = 'none';
+        if (hasContent) { var idx = newsDatesList.indexOf(dateStr); if(idx>=0) showDate(idx); }
+      };
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (popup.style.display === 'block') { popup.style.display = 'none'; return; }
+        var latestDate = datesWithContent[0] || new Date().toISOString().slice(0,10);
+        pickerYear = parseInt(latestDate.slice(0,4));
+        pickerMonth = parseInt(latestDate.slice(5,7)) - 1;
+        renderPicker();
+        popup.style.display = 'block';
+      });
+      document.addEventListener('click', function(e) {
+        if (!popup.contains(e.target) && e.target !== btn) popup.style.display = 'none';
+      });
+    }
+
+    // ── SEARCH ───────────────────────────────────────────────
+    var searchEl = document.getElementById('news-search');
+    if (searchEl) {
+      searchEl.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        var q = this.value.toLowerCase().trim();
+        searchTimer = setTimeout(function() {
+          if (!q) { if(showingAll) renderNews(allNewsItems); else showDate(currentDateIdx); return; }
+          renderNews(allNewsItems.filter(function(n) {
+            return (n.headline||'').toLowerCase().includes(q) || (n.category||'').toLowerCase().includes(q);
+          }));
+        }, 250);
+      });
+    }
+
+    // ── NAV BUTTONS ──────────────────────────────────────────
+    var prevBtn = document.getElementById('prev-date');
+    var nextBtn = document.getElementById('next-date');
+    var allBtn  = document.getElementById('all-dates-btn');
+    if (prevBtn) prevBtn.addEventListener('click', function() { if(showingAll){showDate(0);return;} if(currentDateIdx<newsDatesList.length-1) showDate(currentDateIdx+1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { if(showingAll){showDate(0);return;} if(currentDateIdx>0) showDate(currentDateIdx-1); });
+    if (allBtn)  allBtn.addEventListener('click', showAll);
+
+    // ── LOAD ─────────────────────────────────────────────────
+    fetch(API + '/api/news?limit=500')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var items = Array.isArray(data) ? data : (data.items || []);
+        allNewsItems = items;
+        var dateMap = {};
+        items.forEach(function(n) { var d=(n.published_at||'').slice(0,10); if(d) dateMap[d]=true; });
+        newsDatesList = Object.keys(dateMap).sort().reverse();
+        if (newsDatesList.length) { showDate(0); } else { renderNews([]); updateDateLabel(); }
+        buildCalendarPicker(newsDatesList);
+      })
+      .catch(function() {
+        document.getElementById('news-grid').innerHTML = '<div class="no-results">Unable to load news.</div>';
+      });
+  })();
+  </script>
+<script>
+(function() {
+  var s = document.getElementById('pbc-page-bg');
+  if (!s) { s = document.createElement('style'); s.id = 'pbc-page-bg'; document.head.appendChild(s); }
+  s.textContent = 'body, .page-hero, .content-wrap, .schedule-wrap, #shows-content { background: #f8f9fa !important; }';
+})();
+</script>
+<script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>

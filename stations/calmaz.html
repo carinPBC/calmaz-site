@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Station — Prescott Broadcasting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style2.css" />
+
+<style id="nav-critical">
+nav.main-nav{background:#fbf3e7 !important;position:sticky !important;top:0 !important;z-index:9999 !important;box-shadow:none !important;}
+.main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:110px;}
+.nav-logo img{height:100px;width:auto;object-fit:contain;}
+.nav-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.nav-links-wrap{display:flex;align-items:center;}
+.nav-links{display:flex;align-items:center;gap:0;list-style:none;}
+.nav-links li a{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#1a2f4e;padding:6px 11px;border-bottom:3px solid transparent;display:block;text-decoration:none;transition:color .15s;}
+.nav-links li a:hover{color:#487ea6;}
+.nav-links li a.active{color:#487ea6 !important;border-bottom:3px solid #487ea6 !important;font-weight:800 !important;}
+.nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;font-size:18px;padding:6px;display:flex;align-items:center;}
+.nav-social{display:flex;align-items:center;gap:10px;}
+.nav-social a{color:#1a2f4e;font-size:17px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:color .15s;}
+.nav-social a:hover{color:#487ea6;}
+@media(max-width:900px){.main-nav-inner{padding:0 16px;}.nav-links li a{padding:6px 7px;font-size:11px;}}
+@media(max-width:640px){.nav-links-wrap{display:none !important;}}
+</style>
+</head>
+<body>
+<nav class="main-nav">
+    <div class="main-nav-inner">
+      <a href="../index.html" class="nav-logo">
+        <img src="../images/logo-prescott.png" alt="Prescott Broadcasting" />
+      </a>
+      <div class="nav-right">
+        <div class="nav-links-wrap">
+          <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../pages/news.html">News</a></li>
+            <li><a href="../pages/events.html">Events</a></li>
+            <li><a href="../pages/podcasts.html">Podcasts</a></li>
+            <li><a href="../pages/stations.html" class="active">Our Stations</a></li>
+            <li><a href="../pages/advertise.html">Advertise</a></li>
+            <li><a href="../pages/about.html">About</a></li>
+            <li><a href="../pages/community.html">Community</a></li>
+            <li><a href="../pages/contact.html">Contact</a></li>
+          </ul>
+          <button class="nav-search" aria-label="Search"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        </div>
+        <div class="nav-social">
+          <a href="https://facebook.com/prescottbroadcasting" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://instagram.com/prescottbroadcasting" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://youtube.com/prescottbroadcasting" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg></a>
+          <a href="mailto:info@prescottbroadcasting.com"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+
+  <!-- HERO -->
+  <section class="hero">
+    <img id="station-hero-img" src="" alt="" />
+  </section>
+
+  <!-- LISTEN LIVE BAR -->
+  <div class="listen-bar" id="listen-bar"></div>
+
+  <!-- EDITABLE CONTENT ZONE: NEWS -->
+  <section class="news-section" id="news-section">
+    <div style="max-width:1280px;margin:0 auto">
+      <div class="section-header">
+        <h2 class="section-title">WHAT'S HAPPENING TODAY</h2>
+        <a href="#" class="section-link">VIEW ALL NEWS &rsaquo;</a>
+      </div>
+      <div class="news-layout">
+        <div class="news-grid" id="news-grid"></div>
+        <div id="sidebar">
+          <div class="sidebar-widget" id="weather-widget"></div>
+          <div class="sidebar-widget" id="traffic-widget"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITABLE CONTENT ZONE: SCHEDULE -->
+  <section class="schedule-section" id="schedule-section">
+    <div style="max-width:1280px;margin:0 auto">
+      <div class="section-header">
+        <h2 class="section-title">TODAY'S LINEUP</h2>
+        <a href="#" class="section-link">VIEW FULL SCHEDULE &rsaquo;</a>
+      </div>
+      <div class="schedule-grid" id="schedule-grid"></div>
+    </div>
+  </section>
+
+  <!-- EDITABLE CONTENT ZONE: FEATURED SHOWS -->
+  <section class="shows-section" id="shows-section">
+    <div style="max-width:1280px;margin:0 auto">
+      <div class="section-header">
+        <h2 class="section-title">FEATURED SHOWS &amp; PODCASTS</h2>
+      </div>
+      <div class="shows-grid" id="shows-grid"></div>
+    </div>
+  </section>
+
+  <!-- CROSS PROMO -->
+  <section class="cross-promo" id="cross-promo-section">
+    <div class="cross-promo-inner">
+      <h2 class="cross-promo-title">YOU MAY ALSO ENJOY</h2>
+      <div class="cross-promo-grid" id="cross-promo-grid"></div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/layout.js" data-page="station" data-station-id="calmaz" data-depth="1"></script>
+  <script>
+    const STATION_ID = 'calmaz';
+
+    document.addEventListener('site-config-loaded', function(e) {
+      const cfg = e.detail;
+      const root = window.SITE_ROOT || '../';
+      const station = cfg.stations.find(function(s) { return s.id === STATION_ID; });
+      if (!station) return;
+
+      document.title = station.name + ' — Prescott Broadcasting';
+
+      // Hero
+      var hero = document.getElementById('station-hero-img');
+      if (hero) { hero.src = root + station.heroImage; hero.alt = station.name; }
+
+      // Listen Bar
+      var bar = document.getElementById('listen-bar');
+      if (bar) {
+        var oa = station.onAirShow;
+        bar.innerHTML =
+          '<div class="listen-bar-inner">' +
+          '<a href="' + station.listenLiveUrl + '" class="listen-bar-main" target="_blank">' +
+          '<div class="listen-play-btn">&#9654;</div>' +
+          '<div><div class="listen-bar-label">LISTEN LIVE</div>' +
+          '<div class="listen-bar-sub">Click to listen on air now</div>' +
+          '<div class="listen-wave">&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;&#9644;</div>' +
+          '</div></a>' +
+          '<div class="on-air-block">' +
+          '<div class="on-air-icon">&#127908;</div>' +
+          '<div><div class="on-air-label">' + oa.label + '</div>' +
+          '<div class="on-air-show">' + oa.name + '</div>' +
+          '<div class="on-air-time">' + oa.host + '<br>' + oa.time + '</div>' +
+          '<a href="' + root + oa.scheduleUrl + '" class="on-air-cta">VIEW FULL SCHEDULE</a>' +
+          '</div></div>' +
+          '<div class="program-schedule-block">' +
+          '<div class="prog-icon">&#128197;</div>' +
+          '<div class="prog-label">PROGRAM SCHEDULE</div>' +
+          '<div class="prog-sub">See what's on all day</div>' +
+          '<a href="' + root + station.scheduleUrl + '" class="prog-btn">VIEW SCHEDULE</a>' +
+          '</div></div>';
+      }
+
+      // News grid
+      var newsGrid = document.getElementById('news-grid');
+      if (newsGrid && station.news) {
+        newsGrid.innerHTML = station.news.map(function(n) {
+          return '<div class="news-card">' +
+            '<div class="news-card-img"><img src="' + root + n.image + '" alt="' + n.headline + '" /></div>' +
+            '<span class="news-category">' + n.category + '</span>' +
+            '<h3 class="news-headline">' + n.headline + '</h3>' +
+            '<span class="news-time">' + n.time + '</span>' +
+            '</div>';
+        }).join('');
+      }
+
+      // Weather
+      var weatherW = document.getElementById('weather-widget');
+      if (weatherW && station.weather) {
+        var w = station.weather;
+        weatherW.innerHTML = '<div class="widget-title">' + (station.name.includes('CALMAZ') ? 'QUAD-CITIES' : station.name.toUpperCase().split(' ')[0]) + ' WEATHER</div>' +
+          '<span class="weather-icon">&#9728;&#65039;</span>' +
+          '<div class="weather-temp">' + w.temp + '</div>' +
+          '<div class="weather-condition">' + w.condition + '</div>' +
+          '<div class="weather-range">H ' + w.high + '&nbsp; L ' + w.low + '</div>' +
+          '<a href="' + w.forecastUrl + '" class="widget-link">VIEW FULL FORECAST &rsaquo;</a>';
+      }
+
+      // Traffic
+      var trafficW = document.getElementById('traffic-widget');
+      if (trafficW && station.traffic) {
+        var t = station.traffic;
+        trafficW.innerHTML = '<div class="widget-title">TRAFFIC</div>' +
+          '<div style="font-size:13px;color:var(--text-mid)">' +
+          '<strong>' + t.status + '</strong><br>' + t.detail + '</div>' +
+          '<a href="' + t.url + '" class="widget-link">VIEW TRAFFIC &rsaquo;</a>';
+      }
+
+      // Schedule
+      var schedGrid = document.getElementById('schedule-grid');
+      if (schedGrid && station.schedule) {
+        schedGrid.innerHTML = station.schedule.map(function(slot) {
+          var cls = slot.onAir ? 'schedule-slot on-air' : 'schedule-slot';
+          return '<div class="' + cls + '" id="schedule">' +
+            (slot.onAir ? '<span class="on-air-badge">ON AIR NOW</span>' : '') +
+            '<div class="schedule-time">' + slot.time + '</div>' +
+            '<div class="schedule-show">' + slot.show + '</div>' +
+            '<div class="schedule-host">' + slot.host + '</div>' +
+            '<div class="schedule-hours">' + slot.hours + '</div>' +
+            '</div>';
+        }).join('');
+      }
+
+      // Shows
+      var showsGrid = document.getElementById('shows-grid');
+      if (showsGrid && station.featuredShows) {
+        showsGrid.innerHTML = station.featuredShows.map(function(show) {
+          var schedCls = show.isPodcast ? 'show-schedule podcast' : 'show-schedule';
+          return '<div class="show-card">' +
+            '<div class="show-card-img"><img src="' + root + show.image + '" alt="' + show.name + '" /></div>' +
+            '<div class="show-card-body">' +
+            '<div class="show-name">' + show.name + '</div>' +
+            '<div class="show-host">' + show.host + '</div>' +
+            '<span class="' + schedCls + '">' + show.schedule + '</span>' +
+            '<p class="show-desc">' + show.description + '</p>' +
+            '<a href="' + show.podcastUrl + '" class="show-cta">' +
+            (show.isPodcast ? 'LISTEN NOW' : 'LISTEN TO PODCAST') + ' &rsaquo;</a>' +
+            '</div></div>';
+        }).join('');
+      }
+
+      // Cross promo
+      var crossGrid = document.getElementById('cross-promo-grid');
+      if (crossGrid && station.crossPromo) {
+        var promoStations = station.crossPromo.map(function(id) {
+          return cfg.stations.find(function(s) { return s.id === id; });
+        }).filter(Boolean);
+
+        crossGrid.innerHTML = promoStations.map(function(s) {
+          return '<a href="' + root + s.stationPage + '" class="cross-promo-card">' +
+            '<div class="cross-promo-logo">' +
+            '<img src="' + root + s.logo + '" alt="' + s.name + '" onerror="this.style.display='none'" />' +
+            '</div>' +
+            '<span class="cross-promo-listen">((&#x2022;)) LISTEN LIVE &rsaquo;</span>' +
+            '</a>';
+        }).join('');
+      }
+    });
+  </script>
+<script src="../js/theme.js"></script>
+
+<script>
+(function() {
+
+  function runSearch(q) {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    var results = document.getElementById('pbc-search-results');
+    results.innerHTML = '<div style="color:rgba(255,255,255,.6);font-size:14px;padding:12px 0;">Searching…</div>';
+    var ql = q.toLowerCase();
+    Promise.all([
+      fetch(API + '/api/news?limit=200').then(function(r){return r.json();}).catch(function(){return [];}),
+      fetch(API + '/api/events?limit=200').then(function(r){return r.json();}).catch(function(){return [];})
+    ]).then(function(data) {
+      var news = (data[0].items || data[0]) || [];
+      var events = data[1] || [];
+      var hits = [];
+      news.forEach(function(n) {
+        if ((n.headline||'').toLowerCase().indexOf(ql) >= 0 || (n.body||'').toLowerCase().indexOf(ql) >= 0)
+          hits.push({ type:'News', label:n.headline, sub:n.category||'', href:'../pages/news.html' });
+      });
+      events.forEach(function(e) {
+        if ((e.title||'').toLowerCase().indexOf(ql) >= 0 || (e.description||'').toLowerCase().indexOf(ql) >= 0 || (e.location||'').toLowerCase().indexOf(ql) >= 0)
+          hits.push({ type:'Event', label:e.title, sub:(e.event_date||'')+(e.location?' · '+e.location:''), href:'../pages/events.html' });
+      });
+      if (!hits.length) {
+        results.innerHTML = '<div style="color:rgba(255,255,255,.5);font-size:14px;padding:12px 0;">No results for “' + q + '”</div>';
+        return;
+      }
+      results.innerHTML = '';
+      hits.slice(0,12).forEach(function(h) {
+        var a = document.createElement('a');
+        a.href = h.href;
+        a.style.cssText = 'display:block;background:rgba(255,255,255,.08);border-radius:8px;padding:14px 16px;text-decoration:none;transition:background .15s;margin-bottom:8px;';
+        a.addEventListener('mouseover', function(){ this.style.background='rgba(255,255,255,.15)'; });
+        a.addEventListener('mouseout',  function(){ this.style.background='rgba(255,255,255,.08)'; });
+        a.addEventListener('click', function(){ document.getElementById('pbc-search-overlay').style.display='none'; });
+        a.innerHTML = '<div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#487ea6;margin-bottom:4px;">'+h.type+'</div>'
+          + '<div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:3px;">'+h.label+'</div>'
+          + (h.sub ? '<div style="font-size:12px;color:rgba(255,255,255,.55);">'+h.sub+'</div>' : '');
+        results.appendChild(a);
+      });
+    });
+  }
+
+  function initSearch() {
+    if (!document.getElementById('pbc-search-overlay')) {
+      var overlay = document.createElement('div');
+      overlay.id = 'pbc-search-overlay';
+      overlay.style.cssText = 'display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(3,42,72,.92);z-index:99999;padding:80px 24px 24px;box-sizing:border-box;';
+      overlay.innerHTML = '<div style="max-width:680px;margin:0 auto;">'
+        + '<div style="display:flex;gap:12px;margin-bottom:24px;">'
+        + '<input id="pbc-search-input" type="text" placeholder="Search news, events\u2026" style="flex:1;padding:14px 18px;font-size:17px;border-radius:8px;border:none;outline:none;font-family:inherit;"/>'
+        + '<button onclick="document.getElementById(\'pbc-search-overlay\').style.display=\'none\'" style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;padding:0 18px;border-radius:8px;cursor:pointer;">&#10005;</button>'
+        + '</div>'
+        + '<div id="pbc-search-results" style="display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto;"></div>'
+        + '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.style.display = 'none'; });
+    }
+    // Re-wire input + Enter every open (input element freshly created each time)
+    var input = document.getElementById('pbc-search-input');
+    if (input && !input._wired) {
+      input._wired = true;
+      var t;
+      input.addEventListener('input', function() {
+        clearTimeout(t);
+        var q = this.value.trim();
+        if (q.length < 2) { document.getElementById('pbc-search-results').innerHTML = ''; return; }
+        t = setTimeout(function() { runSearch(q); }, 280);
+      });
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          var q = this.value.trim();
+          if (q.length >= 2) runSearch(q);
+        }
+      });
+    }
+    var btn = document.querySelector('.nav-search');
+    if (btn && !btn._searchWired) {
+      btn._searchWired = true;
+      btn.addEventListener('click', function() {
+        var o = document.getElementById('pbc-search-overlay');
+        o.style.display = 'block';
+        setTimeout(function() { document.getElementById('pbc-search-input').focus(); }, 50);
+      });
+    }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSearch); }
+  else { initSearch(); }
+})();
+</script>
+</body>
+</html>

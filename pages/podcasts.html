@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Podcasts — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+
+    .page-hero-img{width:100%;display:block;object-fit:cover;}
+    .content-wrap{max-width:1600px;margin:0 auto;padding:48px 24px;}
+    .show-group{margin-bottom:52px;}
+    .show-group-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:3px solid #05254c;}
+    .show-group-name{font-size:20px;font-weight:900;color:#05254c;text-transform:uppercase;letter-spacing:.04em;}
+    .show-group-station{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#6c8ea3;color:#fff;padding:3px 10px;border-radius:100px;}
+    #podcasts-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
+    .pod-show-card{display:block;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);text-decoration:none;transition:transform .2s,box-shadow .2s;}
+    .pod-show-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.13);}
+    .pod-card{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);text-decoration:none;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
+    .pod-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.13);}
+    .pod-thumb{width:100%;aspect-ratio:1;object-fit:cover;background:#e8ecf0;display:block;}
+    .pod-thumb-placeholder{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#05254c,#6c8ea3);display:flex;align-items:center;justify-content:center;font-size:48px;}
+    .pod-body{padding:14px;flex:1;display:flex;flex-direction:column;gap:5px;}
+    .pod-date{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6c8ea3;}
+    .pod-title{font-size:14px;font-weight:700;color:#05254c;line-height:1.4;flex:1;}
+    .pod-desc{font-size:12px;color:#546e7a;line-height:1.5;margin-top:2px;}
+    .pod-listen{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;font-weight:700;color:#487ea6;text-transform:uppercase;letter-spacing:.05em;}
+    .no-results{text-align:center;padding:60px 24px;color:#546e7a;font-size:15px;}
+
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  </div>
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+  </div>
+  <div class="page-hero">
+    <h1>Podcasts</h1>
+    <p>Listen to CALMAZ shows on demand.</p>
+  </div>
+
+<div id="podcasts-container" class="content-wrap"></div>
+
+  <div id="site-footer"></div>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+
+var API_URL="https://pbc-cms-production.up.railway.app";
+// Section rendering helper — paste this logic into each page's fetch script
+function renderSection(s, i) {
+  // Embed type — raw HTML (Vimeo/YouTube iframe)
+  if (s.type === 'embed') {
+    var title = s.heading ? '<h2 style="font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#05254c;margin-bottom:16px;">' + s.heading + '</h2>' : '';
+    return '<div style="padding:32px 0;border-bottom:1px solid #e8ecf0;">' + title
+      + '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">'
+      + '<div style="position:absolute;top:0;left:0;width:100%;height:100%;">' + (s.embed_code || '') + '</div>'
+      + '</div>'
+      + (s.body ? '<p style="margin-top:16px;font-size:14px;color:#546e7a;line-height:1.7;">' + s.body + '</p>' : '')
+      + '</div>';
+  }
+  var rev = (i % 2 === 1 && (s.type||'content') === 'content') ? ' reverse' : '';
+  var isHeader = s.type === 'hero-header';
+  var isTextOnly = s.type === 'text-only';
+
+  // Heading tag + styles
+  var hTag = s.heading_size || (isHeader ? 'h1' : 'h2');
+  // For hero-header, only apply the uppercase/bold override if no explicit size was set
+  var heroOverride = isHeader && !s.heading_size;
+  var hSizes = {h1:'clamp(28px,4vw,48px)', h2:'clamp(22px,3vw,36px)', h3:'clamp(18px,2.5vw,26px)'};
+  var hStyle = 'font-size:' + (hSizes[hTag] || hSizes.h2) + ';';
+  if (s.heading_color) hStyle += 'color:' + s.heading_color + ';';
+  if (s.heading_align) hStyle += 'text-align:' + s.heading_align + ';';
+  if (heroOverride) hStyle += 'font-weight:900;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;line-height:1.1;';
+
+  // Separator
+  var sepHtml = '';
+  if (s.separator) {
+    var sepColor = s.separator_color || '#487ea6';
+    var sepAlign = s.heading_align || 'left';
+    var sepMargin = sepAlign === 'center' ? '10px auto 0' : sepAlign === 'right' ? '10px 0 0 auto' : '10px 0 0';
+    sepHtml = '<div style="width:48px;height:4px;background:' + sepColor + ';margin:' + sepMargin + ';"></div>';
+  }
+
+  // Body styles
+  var bodySizes = {small:'13px', normal:'15px', large:'18px', xlarge:'22px'};
+  var bStyle = '';
+  if (s.body_size) bStyle += 'font-size:' + (bodySizes[s.body_size]||'15px') + ';';
+  if (s.body_color) bStyle += 'color:' + s.body_color + ';';
+  if (s.body_align) bStyle += 'text-align:' + s.body_align + ';';
+
+  // Section bg
+  var secStyle = s.bg_color ? 'background:' + s.bg_color + ';' : '';
+
+  // CTA
+  var ctaStyle = s.cta_color ? 'color:' + s.cta_color + ' !important;border-color:' + s.cta_color + ' !important;background:transparent !important;' : '';
+  var ctaHtml = (s.cta_enabled !== false && s.cta_label)
+    ? '<a href="../' + (s.cta_url||'#') + '" class="editorial-cta" style="' + ctaStyle + '">' + s.cta_label + ' &rsaquo;</a>'
+    : '';
+
+  // Image
+  var imgHtml = '';
+  if (s.image && !isHeader && !isTextOnly) {
+    var imgSrc = s.image.startsWith('uploads/') ? API_URL + '/' + s.image : '../' + s.image;
+    imgHtml = '<img class="editorial-img" src="' + imgSrc + '" alt="' + (s.heading||'') + '" />';
+  }
+
+  // Body paragraphs
+  var bodyHtml = '';
+  if (s.body) {
+    bodyHtml = '<div style="' + bStyle + '">'
+      + s.body.split('\n').map(function(p) { return p ? '<p style="margin-bottom:1em;">' + p + '</p>' : ''; }).join('')
+      + '</div>';
+  }
+
+  if (isHeader) {
+    // Hero header: full-width centered layout
+    var headerAlign = s.heading_align || 'center';
+    return '<div class="editorial-section" style="' + secStyle + 'text-align:' + headerAlign + ';padding:48px 24px 24px;">'
+      + '<div style="max-width:800px;margin:0 auto;">'
+      + '<' + hTag + ' style="' + hStyle + '">' + (s.heading||'') + '</' + hTag + '>'
+      + sepHtml
+      + (s.body ? '<div style="' + bStyle + 'margin-top:16px;">' + s.body.split('\n').map(function(p){ return p ? '<p style="margin-bottom:1em;">' + p + '</p>' : ''; }).join('') + '</div>' : '')
+      + ctaHtml
+      + '</div></div>';
+  }
+
+  if (isTextOnly) {
+    return '<div class="editorial-section" style="' + secStyle + '">'
+      + '<div style="max-width:860px;margin:0 auto;padding:0 24px;">'
+      + (s.heading ? '<' + hTag + ' style="' + hStyle + '">' + s.heading + '</' + hTag + '>' + sepHtml : '')
+      + bodyHtml
+      + ctaHtml
+      + '</div></div>';
+  }
+
+  // Standard content section (image + text)
+  return '<div class="editorial-section" style="' + secStyle + '"><div class="editorial-grid' + rev + '">'
+    + '<div class="editorial-text">'
+    + (s.heading ? '<' + hTag + ' style="' + hStyle + '">' + s.heading + '</' + hTag + '>' + sepHtml : '')
+    + bodyHtml
+    + ctaHtml
+    + '</div>'
+    + imgHtml
+    + '</div></div>';
+}
+
+fetch(API_URL+"/api/pages/podcasts").then(function(r){return r.json();}).then(function(p){if(p.hero_image){var isMobile=window.innerWidth<=768;var heroSrc=isMobile&&p.mobile_hero_image?p.mobile_hero_image:p.hero_image;var heroUrl=heroSrc.startsWith("uploads/")?API_URL+"/"+heroSrc:"../"+heroSrc;document.getElementById("page-hero-img").src=heroUrl;}/* bg_color skipped — CALMAZ uses site-level bg */
+      // Re-apply after theme runs to ensure it wins
+      setTimeout(function(){ if(s) s.textContent=s.textContent; }, 300);   // Render CMS sections above page content
+  if (p.sections) {
+    var secs = JSON.parse(p.sections||'[]');
+    if (secs.length) {
+      var secHtml = secs.map(function(s,i){ return renderSection(s,i); }).join('');
+      var cmsContent = document.getElementById('podcasts-cms-sections');
+      if (!cmsContent) {
+        cmsContent = document.createElement('div');
+        cmsContent.id = 'podcasts-cms-sections';
+        var wrap = document.querySelector('.content-wrap') || document.querySelector('.events-wrap');
+        if (wrap) wrap.parentNode.insertBefore(cmsContent, wrap);
+      }
+      cmsContent.innerHTML = secHtml;
+    }
+  }
+}).catch(function(){});
+
+</script>
+<script>
+(function() {
+  var API_URL = "https://pbc-cms-production.up.railway.app";
+  var container = document.getElementById('podcasts-container');
+  if (!container) return;
+
+  fetch(API_URL + '/api/podcasts?limit=500')
+    .then(function(r) { return r.json(); })
+    .then(function(shows) {
+      if (!shows.length) {
+        container.innerHTML = '<p style="text-align:center;padding:60px;color:#546e7a;">No shows available yet.</p>';
+        return;
+      }
+      shows.sort(function(a,b) {
+        var ao = parseInt(a.display_order || 0, 10);
+        var bo = parseInt(b.display_order || 0, 10);
+        if (ao && bo && ao !== bo) return ao - bo;
+        if (ao && !bo) return -1;
+        if (!ao && bo) return 1;
+        return (a.show_name || '').localeCompare(b.show_name || '');
+      });
+      container.innerHTML = shows.map(function(show) {
+        var thumb = show.image
+          ? (show.image.startsWith('http') ? show.image : show.image.startsWith('uploads/') ? API_URL + '/' + show.image : '../' + show.image)
+          : '';
+        var href = show.video_url || show.audio_url || '#';
+        var btnLabel = show.video_url ? '&#9654;&nbsp; Watch / Listen' : show.audio_url ? '&#9654;&nbsp; Listen' : '';
+        return '<a href="show.html?id=' + show.id + '" class="pod-show-card">'
+          + (thumb ? '<img src="' + thumb + '" alt="' + show.show_name.replace(/"/g,'&quot;') + '" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;" />' : '<div style="width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,#05254c,#6c8ea3);display:flex;align-items:center;justify-content:center;"><span style="font-size:40px;color:rgba(255,255,255,.3);">&#9654;</span></div>')
+          + '<div style="padding:16px;">'
+          + '<div style="font-size:15px;font-weight:700;color:#05254c;margin-bottom:6px;">' + show.show_name + '</div>'
+          + (show.description ? '<div style="font-size:12px;color:#546e7a;line-height:1.5;margin-bottom:10px;">' + show.description + '</div>' : '')
+          + '<span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#487ea6;text-transform:uppercase;letter-spacing:.05em;">&#9654; Watch / Listen</span>'
+          + '</div></a>';
+      }).join('');
+    }).catch(function(){});
+})();
+</script>
+<script>
+
+(function() {
+
+  function runSearch(q) {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    var results = document.getElementById('pbc-search-results');
+    results.innerHTML = '<div style="color:rgba(255,255,255,.6);font-size:14px;padding:12px 0;">Searching…</div>';
+    var ql = q.toLowerCase();
+    Promise.all([
+      fetch(API + '/api/news?limit=200').then(function(r){return r.json();}).catch(function(){return [];}),
+      fetch(API + '/api/events?limit=200').then(function(r){return r.json();}).catch(function(){return [];})
+    ]).then(function(data) {
+      var news = (data[0].items || data[0]) || [];
+      var events = data[1] || [];
+      var hits = [];
+      news.forEach(function(n) {
+        if ((n.headline||'').toLowerCase().indexOf(ql) >= 0 || (n.body||'').toLowerCase().indexOf(ql) >= 0)
+          hits.push({ type:'News', label:n.headline, sub:n.category||'', href:'../pages/news.html' });
+      });
+      events.forEach(function(e) {
+        if ((e.title||'').toLowerCase().indexOf(ql) >= 0 || (e.description||'').toLowerCase().indexOf(ql) >= 0 || (e.location||'').toLowerCase().indexOf(ql) >= 0)
+          hits.push({ type:'Event', label:e.title, sub:(e.event_date||'')+(e.location?' · '+e.location:''), href:'../pages/events.html' });
+      });
+      if (!hits.length) {
+        results.innerHTML = '<div style="color:rgba(255,255,255,.5);font-size:14px;padding:12px 0;">No results for “' + q + '”</div>';
+        return;
+      }
+      results.innerHTML = '';
+      hits.slice(0,12).forEach(function(h) {
+        var a = document.createElement('a');
+        a.href = h.href;
+        a.style.cssText = 'display:block;background:rgba(255,255,255,.08);border-radius:8px;padding:14px 16px;text-decoration:none;transition:background .15s;margin-bottom:8px;';
+        a.addEventListener('mouseover', function(){ this.style.background='rgba(255,255,255,.15)'; });
+        a.addEventListener('mouseout',  function(){ this.style.background='rgba(255,255,255,.08)'; });
+        a.addEventListener('click', function(){ document.getElementById('pbc-search-overlay').style.display='none'; });
+        a.innerHTML = '<div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#487ea6;margin-bottom:4px;">'+h.type+'</div>'
+          + '<div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:3px;">'+h.label+'</div>'
+          + (h.sub ? '<div style="font-size:12px;color:rgba(255,255,255,.55);">'+h.sub+'</div>' : '');
+        results.appendChild(a);
+      });
+    });
+  }
+
+  function initSearch() {
+    if (!document.getElementById('pbc-search-overlay')) {
+      var overlay = document.createElement('div');
+      overlay.id = 'pbc-search-overlay';
+      overlay.style.cssText = 'display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(3,42,72,.92);z-index:99999;padding:80px 24px 24px;box-sizing:border-box;';
+      overlay.innerHTML = '<div style="max-width:680px;margin:0 auto;">'
+        + '<div style="display:flex;gap:12px;margin-bottom:24px;">'
+        + '<input id="pbc-search-input" type="text" placeholder="Search news, events\u2026" style="flex:1;padding:14px 18px;font-size:17px;border-radius:8px;border:none;outline:none;font-family:inherit;"/>'
+        + '<button onclick="document.getElementById(\'pbc-search-overlay\').style.display=\'none\'" style="background:rgba(255,255,255,.15);border:none;color:#fff;font-size:22px;padding:0 18px;border-radius:8px;cursor:pointer;">&#10005;</button>'
+        + '</div>'
+        + '<div id="pbc-search-results" style="display:flex;flex-direction:column;gap:10px;max-height:60vh;overflow-y:auto;"></div>'
+        + '</div>';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.style.display = 'none'; });
+    }
+    // Re-wire input + Enter every open (input element freshly created each time)
+    var input = document.getElementById('pbc-search-input');
+    if (input && !input._wired) {
+      input._wired = true;
+      var t;
+      input.addEventListener('input', function() {
+        clearTimeout(t);
+        var q = this.value.trim();
+        if (q.length < 2) { document.getElementById('pbc-search-results').innerHTML = ''; return; }
+        t = setTimeout(function() { runSearch(q); }, 280);
+      });
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          var q = this.value.trim();
+          if (q.length >= 2) runSearch(q);
+        }
+      });
+    }
+    var btn = document.querySelector('.nav-search');
+    if (btn && !btn._searchWired) {
+      btn._searchWired = true;
+      btn.addEventListener('click', function() {
+        var o = document.getElementById('pbc-search-overlay');
+        o.style.display = 'block';
+        setTimeout(function() { document.getElementById('pbc-search-input').focus(); }, 50);
+      });
+    }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSearch); }
+  else { initSearch(); }
+})();
+
+</script>
+<script>
+(function() {
+  var API = 'https://pbc-cms-production.up.railway.app';
+  fetch(API + '/api/pages/podcasts')
+    .then(function(r) { return r.json(); })
+    .then(function(p) {
+      if (p.page_heading) {
+        var h1 = document.querySelector('.page-hero h1');
+        if (h1) h1.textContent = p.page_heading;
+      }
+      if (p.page_subheading) {
+        var sub = document.querySelector('.page-hero p');
+        if (sub) sub.textContent = p.page_subheading;
+      }
+      /* bg_color skipped — CALMAZ uses site-level bg */
+    }).catch(function() {});
+})();
+</script>
+<script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>

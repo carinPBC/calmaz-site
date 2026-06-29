@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article &mdash; CalmArizona</title>
+  <!-- Open Graph — updated by JS when article loads -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="CalmArizona" />
+  <meta property="og:title" content="Article &mdash; CalmArizona" id="og-title-meta" />
+  <meta property="og:description" content="" id="og-desc-meta" />
+  <meta property="og:image" content="" id="og-image-meta" />
+  <meta property="og:url" content="" id="og-url-meta" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Article &mdash; CalmArizona" id="tw-title-meta" />
+  <meta name="twitter:description" content="" id="tw-desc-meta" />
+  <meta name="twitter:image" content="" id="tw-image-meta" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;font-size:18px;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+    .article-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
+    .article-back { display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#487ea6;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;margin-bottom:28px; }
+    .article-back:hover { color:#315f83; }
+    .article-cat { font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#487ea6;margin-bottom:10px; }
+    .article-headline { font-size:clamp(26px,4vw,40px);font-weight:900;color:#05254c;line-height:1.15;margin-bottom:16px; }
+    .article-meta { display:flex;align-items:center;gap:16px;font-size:13px;color:#546e7a;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #e8ecf0;flex-wrap:wrap; }
+    .article-img { width:100%;border-radius:8px;margin-bottom:28px;max-height:400px;object-fit:contain;background:#e8ecf0;display:block; }
+    .article-body { font-size:16px;color:#333;line-height:1.85; }
+    .article-body p { margin-bottom:1.4em; }
+    .article-loading { text-align:center;padding:48px;color:#546e7a; }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+
+  <div class="article-wrap">
+    <a href="news.html" class="article-back">&#8592; Back to News</a>
+    <div id="article-content"><div class="article-loading">Loading article...</div></div>
+  </div>
+
+  <div class="content-wrap" style="max-width:860px;margin:0 auto;padding:0 32px 32px;"><div id="article-soundcloud" style="display:none;margin-top:-8px;"></div></div>
+  <div id="site-footer"></div>
+
+  <script>
+    var API_URL = 'https://pbc-cms-production.up.railway.app';
+    var params = new URLSearchParams(window.location.search);
+    var articleId = params.get('id');
+    if (!articleId) { window.location.href = 'news.html'; }
+    else {
+      fetch(API_URL + '/api/news/' + articleId)
+        .then(function(r) { return r.json(); })
+        .then(function(article) {
+          if (!article || !article.headline) {
+            
+          // Build share URL for social media (server-rendered OG tags)
+          var shareUrl = 'https://pbc-cms-production.up.railway.app/share/article/' + articleId + '?station=calmaz';
+          
+          // Add share bar after article loads
+          var shareBar = document.createElement('div');
+          shareBar.style.cssText = 'display:flex;align-items:center;gap:10px;padding:16px 0;border-top:1px solid #e8ecf0;margin-top:24px;flex-wrap:wrap;';
+          shareBar.innerHTML = '<span style="font-size:12px;font-weight:700;color:#546e7a;text-transform:uppercase;letter-spacing:.05em;">Share:</span>'
+            + '<a href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(shareUrl)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#1877f2;color:#fff;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;">Facebook</a>'
+            + '<a href="https://twitter.com/intent/tweet?url='+encodeURIComponent(shareUrl)+'&text='+encodeURIComponent(article.headline)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#000;color:#fff;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;">&#120143; / Twitter</a>'
+            + '<button onclick="navigator.clipboard.writeText(window.location.href).then(function(){this.textContent=\'✓ Copied!\';setTimeout(function(){document.querySelector(\'.share-copy-btn\').textContent=\'Copy Link\'},2000)}.bind(this))" class="share-copy-btn" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#487ea6;color:#fff;border:none;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;">Copy Link</button>';
+          
+          // Append share bar after article content renders
+          setTimeout(function() {
+            var scWrap = document.querySelector('.content-wrap');
+            if (scWrap) {
+              scWrap.parentNode.insertBefore(shareBar, scWrap.nextSibling);
+            } else {
+              var wrap = document.querySelector('.article-wrap');
+              if (wrap) wrap.appendChild(shareBar);
+            }
+          }, 100);
+          
+          document.getElementById('article-content').innerHTML = '<div class="article-loading">Article not found.</div>';
+            return;
+          }
+          document.title = article.headline + ' \u2014 CalmArizona';
+          // Update Open Graph meta tags for social sharing
+          var articleUrl = window.location.href;
+          var shareUrl = 'https://pbc-cms-production.up.railway.app/share/article/' + articleId + '?station=calmaz';
+          var setMeta = function(id, val) { var el = document.getElementById(id); if (el && val) el.setAttribute('content', val); };
+          setMeta('og-title-meta', article.headline + ' \u2014 CalmArizona');
+          setMeta('og-desc-meta', (article.body || '').replace(/<[^>]+>/g, '').substring(0, 200));
+          setMeta('og-url-meta', articleUrl);
+          setMeta('tw-title-meta', article.headline + ' \u2014 CalmArizona');
+          setMeta('tw-desc-meta', (article.body || '').replace(/<[^>]+>/g, '').substring(0, 200));
+          if (imgSrc || (article.image && article.image.startsWith('http'))) {
+            var fullImg = article.image && article.image.startsWith('http') ? article.image : (imgSrc || '');
+            setMeta('og-image-meta', fullImg);
+            setMeta('tw-image-meta', fullImg);
+          }
+          var imgSrc = article.image ? (article.image.startsWith('http') ? article.image : '../' + article.image) : ''; var img = imgSrc ? '<img class="article-img" src="' + imgSrc + '" alt="' + article.headline + '" />' : '';
+          var date = article.published_at ? new Date(article.published_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+          var author = article.author ? '<span>By ' + article.author + '</span>' : '';
+          var body = (article.body || 'No content available.').split('\n').map(function(p) { return p ? '<p>' + p + '</p>' : ''; }).join('');
+          
+          // Build share URL for social media (server-rendered OG tags)
+          var shareUrl = 'https://pbc-cms-production.up.railway.app/share/article/' + articleId + '?station=calmaz';
+          
+          // Add share bar after article loads
+          var shareBar = document.createElement('div');
+          shareBar.style.cssText = 'display:flex;align-items:center;gap:10px;padding:16px 0;border-top:1px solid #e8ecf0;margin-top:24px;flex-wrap:wrap;';
+          shareBar.innerHTML = '<span style="font-size:12px;font-weight:700;color:#546e7a;text-transform:uppercase;letter-spacing:.05em;">Share:</span>'
+            + '<a href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(shareUrl)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#1877f2;color:#fff;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;">Facebook</a>'
+            + '<a href="https://twitter.com/intent/tweet?url='+encodeURIComponent(shareUrl)+'&text='+encodeURIComponent(article.headline)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#000;color:#fff;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;">&#120143; / Twitter</a>'
+            + '<button onclick="navigator.clipboard.writeText(window.location.href).then(function(){this.textContent=\'✓ Copied!\';setTimeout(function(){document.querySelector(\'.share-copy-btn\').textContent=\'Copy Link\'},2000)}.bind(this))" class="share-copy-btn" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#487ea6;color:#fff;border:none;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;">Copy Link</button>';
+          
+          // Append share bar after article content renders
+          setTimeout(function() {
+            var scWrap = document.querySelector('.content-wrap');
+            if (scWrap) {
+              scWrap.parentNode.insertBefore(shareBar, scWrap.nextSibling);
+            } else {
+              var wrap = document.querySelector('.article-wrap');
+              if (wrap) wrap.appendChild(shareBar);
+            }
+          }, 100);
+          
+          document.getElementById('article-content').innerHTML =
+            '<div class="article-cat">' + (article.news_type || '') + '</div>'
+            + '<h1 class="article-headline">' + article.headline + '</h1>'
+            + '<div class="article-meta"><span>' + date + '</span>' + author + '</div>'
+            + img
+            + '<div class="article-body">' + body + '</div>';
+          // SoundCloud embed + body below
+          if (article.soundcloud_url) {
+            var scEl = document.getElementById('article-soundcloud');
+            if (scEl) {
+              var embedUrl = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(article.soundcloud_url)
+                + '&color=%23c0392b&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false';
+              var belowHtml = '';
+              if (article.body_below) {
+                belowHtml = '<div class="article-body" style="margin-top:20px;">'
+                  + article.body_below.split('\n').map(function(p){return p?'<p>'+p+'</p>':''}).join('')
+                  + '</div>';
+              }
+              scEl.innerHTML = '<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="' + embedUrl + '"></iframe>'
+                + belowHtml;
+              scEl.style.display = 'block';
+            }
+          } else if (article.body_below) {
+            // No audio clip but has body_below — append to article body
+            var scEl = document.getElementById('article-soundcloud');
+            if (scEl) {
+              scEl.innerHTML = '<div class="article-body">'
+                + article.body_below.split('\n').map(function(p){return p?'<p>'+p+'</p>':''}).join('')
+                + '</div>';
+              scEl.style.display = 'block';
+            }
+          }
+        })
+        .catch(function() {
+          
+          // Build share URL for social media (server-rendered OG tags)
+          var shareUrl = 'https://pbc-cms-production.up.railway.app/share/article/' + articleId + '?station=calmaz';
+          
+          // Add share bar after article loads
+          var shareBar = document.createElement('div');
+          shareBar.style.cssText = 'display:flex;align-items:center;gap:10px;padding:16px 0;border-top:1px solid #e8ecf0;margin-top:24px;flex-wrap:wrap;';
+          shareBar.innerHTML = '<span style="font-size:12px;font-weight:700;color:#546e7a;text-transform:uppercase;letter-spacing:.05em;">Share:</span>'
+            + '<a href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(shareUrl)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#1877f2;color:#fff;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;">Facebook</a>'
+            + '<a href="https://twitter.com/intent/tweet?url='+encodeURIComponent(shareUrl)+'&text='+encodeURIComponent(article.headline)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#000;color:#fff;border-radius:5px;font-size:12px;font-weight:700;text-decoration:none;">&#120143; / Twitter</a>'
+            + '<button onclick="navigator.clipboard.writeText(window.location.href).then(function(){this.textContent=\'✓ Copied!\';setTimeout(function(){document.querySelector(\'.share-copy-btn\').textContent=\'Copy Link\'},2000)}.bind(this))" class="share-copy-btn" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:#487ea6;color:#fff;border:none;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;">Copy Link</button>';
+          
+          // Append share bar after article content renders
+          setTimeout(function() {
+            var scWrap = document.querySelector('.content-wrap');
+            if (scWrap) {
+              scWrap.parentNode.insertBefore(shareBar, scWrap.nextSibling);
+            } else {
+              var wrap = document.querySelector('.article-wrap');
+              if (wrap) wrap.appendChild(shareBar);
+            }
+          }, 100);
+          
+          document.getElementById('article-content').innerHTML = '<div class="article-loading">Could not load article.</div>';
+        });
+    }
+  </script>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>

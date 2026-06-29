@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Show — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:110px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+    .show-wrap{max-width:1000px;margin:0 auto;padding:48px 32px;}
+    .show-header{display:flex;align-items:flex-start;gap:24px;margin-bottom:40px;padding-bottom:24px;border-bottom:3px solid #05254c;}
+    .show-thumb{width:120px;height:120px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+    .show-thumb-placeholder{width:120px;height:120px;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,#05254c,#6c8ea3);display:flex;align-items:center;justify-content:center;}
+    .show-title{font-size:clamp(22px,3vw,36px);font-weight:900;color:#05254c;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;}
+    .show-desc{font-size:14px;color:#546e7a;line-height:1.7;}
+    .show-section-title{font-size:16px;font-weight:800;color:#05254c;text-transform:uppercase;letter-spacing:.05em;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #487ea6;}
+    .episode-item{padding:20px 0;border-bottom:1px solid #e8ecf0;}
+    .episode-item:last-child{border-bottom:none;}
+    .episode-meta{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
+    .episode-title{font-size:15px;font-weight:700;color:#05254c;}
+    .episode-date{font-size:12px;color:#546e7a;flex-shrink:0;margin-left:16px;}
+    .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;}
+    .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+    @media(max-width:640px){.show-wrap{padding:32px 16px;}.show-header{flex-direction:column;}}
+    body{background:#f8f9fa !important;}
+  </style>
+</head>
+<body class="calmaz-inner" style="background:#f8f9fa;">
+  <div id="site-header"></div>
+
+  <div class="show-wrap">
+    <div id="show-content">
+      <div style="text-align:center;padding:60px 0;color:#546e7a;">Loading...</div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/theme.js"></script>
+  <script>setTimeout(function(){document.body.style.setProperty("background","#f8f9fa","important");},100);</script>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script src="../js/player.js?v=14"></script>
+
+  <script>
+  (function() {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    var params = new URLSearchParams(window.location.search);
+    var showId = parseInt(params.get('id'));
+
+    if (!showId) {
+      document.getElementById('show-content').innerHTML = '<p style="text-align:center;padding:60px;color:#546e7a;">Show not found.</p>';
+      return;
+    }
+
+    Promise.all([
+      fetch(API + '/api/podcasts/' + showId).then(function(r){ return r.json(); }).catch(function(){ return null; }),
+      fetch(API + '/api/episodes?podcast_id=' + showId + '&limit=50').then(function(r){ return r.json(); }).catch(function(){ return []; })
+    ]).then(function(data) {
+      var show = data[0];
+      var episodes = data[1] || [];
+
+      if (!show || !show.id) {
+        document.getElementById('show-content').innerHTML = '<p style="text-align:center;padding:60px;color:#546e7a;">Show not found.</p>';
+        return;
+      }
+
+      document.title = show.show_name + ' — CalmArizona';
+
+      // Filter to last 30 days
+      var cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - 30);
+      var recent = episodes.filter(function(ep) {
+        return !ep.published_at || new Date(ep.published_at) >= cutoff;
+      });
+
+      // Thumbnail
+      var thumb = show.image
+        ? (show.image.startsWith('http') ? show.image : show.image.startsWith('uploads/') ? API + '/' + show.image : '../' + show.image)
+        : '';
+      var thumbHtml = thumb
+        ? '<img class="show-thumb" src="' + thumb + '" alt="' + show.show_name.replace(/"/g,'&quot;') + '" />'
+        : '<div class="show-thumb-placeholder"><span style="font-size:40px;color:rgba(255,255,255,.3);">&#9654;</span></div>';
+
+      // Header
+      var headerHtml = '<div class="show-header">'
+        + thumbHtml
+        + '<div>'
+        + '<div class="show-title">' + show.show_name + '</div>'
+        + (show.description ? '<div class="show-desc">' + show.description + '</div>' : '')
+        + '</div></div>';
+
+      // Vimeo embed (permanent show embed)
+      var videoHtml = '';
+      if (show.video_url) {
+        var vSrc = show.video_url;
+        // If already an embed URL, use as-is. If a standard vimeo.com/ID URL, convert.
+        if (vSrc.indexOf('player.vimeo.com') === -1 && vSrc.indexOf('/embed') === -1) {
+          // Standard vimeo.com/123456 → player embed
+          var vMatch = vSrc.match(/vimeo\.com\/(\d+)/);
+          if (vMatch) vSrc = 'https://player.vimeo.com/video/' + vMatch[1];
+        }
+        videoHtml = '<div class="show-section-title">Latest Episode</div>'
+          + '<div class="video-wrap"><iframe src="' + vSrc + '" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe></div>';
+      }
+
+      // Episode list
+      var episodeHtml = '';
+      if (recent.length) {
+        var epItems = recent.map(function(ep) {
+          var date = ep.published_at
+            ? new Date(ep.published_at.slice(0,10)+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+            : '';
+          var scEmbed = '';
+          if (ep.soundcloud_url) {
+            var scSrc = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(ep.soundcloud_url)
+              + '&color=%23c0392b&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false';
+            scEmbed = '<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="' + scSrc + '" style="border-radius:6px;margin-top:10px;display:block;"></iframe>';
+          }
+          var rewatchHtml = '';
+          if (ep.rewatch_url) {
+            var rwSrc = ep.rewatch_url;
+            if (rwSrc.indexOf('player.vimeo.com') === -1 && rwSrc.indexOf('/embed') === -1) {
+              var rwMatch = rwSrc.match(/vimeo\.com\/(\d+)/);
+              if (rwMatch) rwSrc = 'https://player.vimeo.com/video/' + rwMatch[1];
+            }
+            rewatchHtml = '<div class="video-wrap" style="margin-top:10px;"><iframe src="' + rwSrc + '" allow="autoplay;fullscreen" allowfullscreen></iframe></div>';
+          }
+          return '<div class="episode-item">'
+            + '<div class="episode-meta">'
+            + '<div class="episode-title">' + ep.title + '</div>'
+            + '</div>'
+            + (ep.description ? '<div style="font-size:13px;color:#546e7a;line-height:1.6;margin:4px 0 10px;">' + ep.description + '</div>' : '')
+            + rewatchHtml
+            + scEmbed
+            + '</div>';
+        }).join('');
+        episodeHtml = '<div class="show-section-title">Recent Episodes</div>' + epItems;
+      }
+
+      document.getElementById('show-content').innerHTML = headerHtml + videoHtml + episodeHtml;
+    });
+  })();
+  </script>
+</body>
+</html>

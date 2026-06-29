@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archive — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" /><link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  
+    .archive-news-card { display:flex; gap:16px; align-items:flex-start; background:#fff; border-radius:8px; padding:16px 20px; box-shadow:0 2px 8px rgba(0,0,0,.06); text-decoration:none; transition:box-shadow .15s; }
+    .archive-news-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+</style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+
+  </div>
+  <div class="page-hero"><h1>News Archive</h1><p>Browse past news and stories from CALMAZ.</p></div>
+  <div class="content-wrap"><div id="archive-content"><div style="color:#546e7a;font-size:14px;padding:24px 0;">Loading archive…</div></div></div>
+  <div id="site-footer"></div>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+(function(){
+  var API='https://pbc-cms-production.up.railway.app';
+  var page=1,perPage=20,total=0;
+  function load(p){
+    fetch(API+'/api/news?limit='+perPage+'&station_id=calmaz').then(function(r){return r.json();}).then(function(d){
+      var items=d.items||d||[];
+      var el=document.getElementById('archive-content');
+      if(!items.length){el.innerHTML='<p style="color:#546e7a">No archived articles found.</p>';return;}
+      el.innerHTML='<div style="display:flex;flex-direction:column;gap:12px;">'
+        +items.map(function(n){
+          var date=n.published_at?new Date(n.published_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'';
+          return '<a href="../pages/article.html?id='+n.id+'" class="archive-news-card">'
+            +'<div style="flex:1;">'
+            +(n.category?'<div style="font-size:10px;font-weight:800;color:#487ea6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">'+n.category+'</div>':'')
+            +'<div style="font-size:16px;font-weight:700;color:#05254c;line-height:1.4;margin-bottom:4px;">'+n.headline+'</div>'
+            +'<div style="font-size:12px;color:#90a4ae;">'+date+'</div>'
+            +'</div></a>';
+        }).join('')+'</div>';
+    }).catch(function(){document.getElementById('archive-content').innerHTML='<p style="color:#487ea6">Could not load archive.</p>';});
+  }
+  load(1);
+})();
+</script>
+<script>
+(function() {
+  var API = 'https://pbc-cms-production.up.railway.app';
+  fetch(API + '/api/pages/calmaz-archive')
+    .then(function(r) { return r.json(); })
+    .then(function(p) {
+      if (p.page_heading) {
+        var h1 = document.querySelector('.page-hero h1');
+        if (h1) h1.textContent = p.page_heading;
+      }
+      if (p.page_subheading) {
+        var sub = document.querySelector('.page-hero p');
+        if (sub) sub.textContent = p.page_subheading;
+      }
+      if (p.bg_color) {
+        var s = document.getElementById('pbc-page-bg');
+        if (!s) { s = document.createElement('style'); s.id = 'pbc-page-bg'; document.head.appendChild(s); }
+        s.textContent = 'body, .page-hero, .content-wrap, .schedule-wrap, #shows-content, .editorial-section { background: ' + p.bg_color + ' !important; }';
+      }
+    }).catch(function() {});
+})();
+</script>
+<script>
+(function() {
+  var API = 'https://pbc-cms-production.up.railway.app';
+  fetch(API + '/api/pages/calmaz-archive')
+    .then(function(r) { return r.json(); })
+    .then(function(p) {
+      if (p.bg_color) {
+        var s = document.getElementById('pbc-page-bg');
+        if (!s) { s = document.createElement('style'); s.id = 'pbc-page-bg'; document.head.appendChild(s); }
+        s.textContent = 'body, .page-hero, .content-wrap, .schedule-wrap, #shows-content, .editorial-section { background: ' + p.bg_color + ' !important; }';
+      }
+    }).catch(function() {});
+})();
+</script>
+<script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>

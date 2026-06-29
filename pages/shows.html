@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shows — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+    .shows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      padding: 40px 48px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .show-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .show-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,.12); }
+    .show-card-header {
+      padding: 20px 20px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .show-color-bar {
+      width: 6px;
+      border-radius: 3px;
+      align-self: stretch;
+      flex-shrink: 0;
+    }
+    .show-card-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #05254c;
+      line-height: 1.3;
+      text-align: left;
+    }
+    .show-card-times {
+      font-size: 11px;
+      font-weight: 700;
+      color: #487ea6;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-top: 3px;
+      text-align: left;
+    }
+    .show-card-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #e8ecf0;
+    }
+    .show-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .show-card-body {
+      padding: 16px 20px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .show-card-desc {
+      font-size: 14px;
+      color: #546e7a;
+      line-height: 1.7;
+      flex: 1;
+      text-align: left;
+    }
+    .show-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #487ea6;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .show-card-link:hover { text-decoration: underline; }
+
+    .shows-toolbar { max-width: var(--max-width); margin: 0 auto; padding: 24px 48px 0; display:flex; justify-content:flex-end; gap:10px; }
+    .shows-toggle { border:1.5px solid #487ea6; background:#fff; color:#487ea6; border-radius:999px; padding:8px 16px; font-size:12px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; cursor:pointer; }
+    .shows-toggle.active { background:#487ea6; color:#fff; }
+    .schedule-group { max-width: var(--max-width); margin: 0 auto; padding: 20px 48px 0; }
+    .schedule-group-title { font-size:18px; font-weight:900; color:#05254c; text-transform:uppercase; letter-spacing:.06em; border-bottom:3px solid #487ea6; padding-bottom:10px; margin-bottom:4px; }
+    .schedule-group .shows-grid { padding: 20px 0 28px; }
+    @media (max-width: 768px) {
+      .shows-grid { padding: 24px 16px; grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .shows-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  </div>
+
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+  </div>
+
+  <div class="page-hero">
+    <h1>Shows</h1>
+    <p>Meet the voices of CalmArizona.</p>
+  </div>
+
+  <div class="shows-toolbar">
+    <button id="schedule-toggle" class="shows-toggle" type="button">Organize by Schedule</button>
+  </div>
+  <div id="shows-content">
+    <div style="text-align:center;padding:48px;color:#546e7a;">Loading shows…</div>
+  </div>
+
+  <div id="site-footer"></div>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+  (function() {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    var scheduleMode = false;
+    var cachedShows = [];
+    var cachedSlots = [];
+    var showTimes = {};
+
+    function fmtHour(h) {
+      if (h === 0 || h === 24) return '12:00 AM';
+      if (h === 12) return '12:00 PM';
+      return h < 12 ? h + ':00 AM' : (h - 12) + ':00 PM';
+    }
+    function groupLabel(g) {
+      return {mon:'Monday','tue-fri':'Tuesday–Friday',sat:'Saturday',sun:'Sunday'}[g] || g;
+    }
+    function imgForShow(s) {
+      return s.image ? (s.image.startsWith('http') ? s.image : s.image.startsWith('/uploads/') ? 'https://pbc-cms-production.up.railway.app' + s.image : 'https://pbc-cms-production.up.railway.app/' + s.image) : null;
+    }
+    function buildShowTimes(slots) {
+      var rawSlots = {};
+      slots.forEach(function(slot) {
+        if (!rawSlots[slot.show_id]) rawSlots[slot.show_id] = [];
+        rawSlots[slot.show_id].push(slot);
+      });
+      var out = {};
+      Object.keys(rawSlots).forEach(function(showId) {
+        var slotsForShow = rawSlots[showId];
+        var entries = [];
+        var skipTueFri = {};
+        slotsForShow.forEach(function(slot) {
+          if (slot.day_group !== 'mon') return;
+          var timeStr = fmtHour(slot.start_hour) + ' – ' + fmtHour(slot.end_hour);
+          var match = slotsForShow.find(function(s) { return s.day_group === 'tue-fri' && s.start_hour === slot.start_hour && s.end_hour === slot.end_hour; });
+          if (match) { entries.push('Mon–Fri · ' + timeStr); skipTueFri[match.id] = true; }
+          else { entries.push('Monday · ' + timeStr); }
+        });
+        slotsForShow.forEach(function(slot) {
+          if (slot.day_group !== 'tue-fri' || skipTueFri[slot.id]) return;
+          entries.push('Tue–Fri · ' + fmtHour(slot.start_hour) + ' – ' + fmtHour(slot.end_hour));
+        });
+        slotsForShow.forEach(function(slot) {
+          if (slot.day_group !== 'sat' && slot.day_group !== 'sun') return;
+          entries.push((slot.day_group === 'sat' ? 'Saturday' : 'Sunday') + ' · ' + fmtHour(slot.start_hour) + ' – ' + fmtHour(slot.end_hour));
+        });
+        out[showId] = entries;
+      });
+      return out;
+    }
+    function showCard(s, slot) {
+      var imgSrc = imgForShow(s);
+      var times = slot ? (groupLabel(slot.day_group) + ' · ' + fmtHour(slot.start_hour) + ' – ' + fmtHour(slot.end_hour)) : (showTimes[s.id] ? showTimes[s.id].join('<br>') : '');
+      return '<div class="show-card">'
+        + (imgSrc ? '<div class="show-card-img-wrap"><img src="'+imgSrc+'" alt="'+s.name+'" onerror="this.parentNode.style.display=\'none\'" /></div>' : '')
+        + '<div class="show-card-header">'
+        + '<div class="show-color-bar" style="background:'+(s.color||'#487ea6')+';"></div>'
+        + '<div><div class="show-card-name">'+s.name+'</div>'
+        + (times ? '<div class="show-card-times">'+times+'</div>' : '')
+        + '</div></div>'
+        + '<div class="show-card-body">'
+        + (s.description ? '<div class="show-card-desc">'+s.description+'</div>' : '')
+        + (s.link_url ? '<a href="'+s.link_url+'" target="_blank" class="show-card-link">Learn More &rsaquo;</a>' : '')
+        + '</div></div>';
+    }
+    function renderDefault() {
+      var el = document.getElementById('shows-content');
+      var featured = cachedShows.filter(function(s) { return s.description || s.image; });
+      var displayShows = featured.length ? featured : cachedShows;
+      if (!displayShows.length) { el.innerHTML = '<div style="text-align:center;padding:48px;color:#546e7a;">Shows coming soon.</div>'; return; }
+      el.innerHTML = '<div class="shows-grid">' + displayShows.map(function(s){ return showCard(s); }).join('') + '</div>';
+    }
+    function renderBySchedule() {
+      var el = document.getElementById('shows-content');
+      var showMap = {};
+      cachedShows.forEach(function(s){ showMap[s.id] = s; });
+      var groups = [
+        {key:'mon', title:'Monday'},
+        {key:'tue-fri', title:'Tuesday–Friday'},
+        {key:'sat', title:'Saturday'},
+        {key:'sun', title:'Sunday'}
+      ];
+      var html = groups.map(function(g) {
+        var groupSlots = cachedSlots.filter(function(slot){ return slot.day_group === g.key && showMap[slot.show_id]; })
+          .sort(function(a,b){ return (a.start_hour - b.start_hour) || (a.end_hour - b.end_hour); });
+        if (!groupSlots.length) return '';
+        return '<section class="schedule-group"><div class="schedule-group-title">'+g.title+'</div><div class="shows-grid">'
+          + groupSlots.map(function(slot){ return showCard(showMap[slot.show_id], slot); }).join('')
+          + '</div></section>';
+      }).join('');
+      el.innerHTML = html || '<div style="text-align:center;padding:48px;color:#546e7a;">No scheduled shows found.</div>';
+    }
+    function render() {
+      var btn = document.getElementById('schedule-toggle');
+      if (btn) { btn.classList.toggle('active', scheduleMode); btn.textContent = scheduleMode ? 'Show Default View' : 'Organize by Schedule'; }
+      scheduleMode ? renderBySchedule() : renderDefault();
+    }
+
+    fetch(API + '/api/schedule/calmaz')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        cachedShows = d.shows || [];
+        cachedSlots = d.slots || [];
+        showTimes = buildShowTimes(cachedSlots);
+        render();
+        var btn = document.getElementById('schedule-toggle');
+        if (btn) btn.onclick = function(){ scheduleMode = !scheduleMode; render(); };
+      })
+      .catch(function() {
+        document.getElementById('shows-content').innerHTML = '<div style="text-align:center;padding:48px;color:#487ea6;">Could not load shows.</div>';
+      });
+  })();
+  </script>
+<script>
+(function() {
+  var s = document.getElementById('pbc-page-bg');
+  if (!s) { s = document.createElement('style'); s.id = 'pbc-page-bg'; document.head.appendChild(s); }
+  s.textContent = 'body, .page-hero, .content-wrap, .schedule-wrap, #shows-content { background: #f8f9fa !important; }';
+})();
+</script>
+<script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>

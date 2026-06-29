@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalmArizona — Music Beautiful as Prescott</title>
+  <link rel="icon" type="image/png" href="images/logo-calmaz.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:relative !important;top:auto !important;z-index:auto !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:150px;}
+    .nav-logo img{height:120px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}.nav-links li a{padding:6px 7px;font-size:11px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  
+</head>
+<body class="calmaz-home">
+  <div id="site-header"></div>
+  
+  <!-- HERO CAROUSEL -->
+  <section id="hero-section" style="width:100%;background:#05254c;padding:40px 0;border-bottom:3px solid rgba(255,255,255,0.12);">
+    <div id="calmaz-carousel-wrap" style="width:75%;margin:0 auto;position:relative;border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.35);background:#031e36;min-height:200px;">
+
+      <!-- Slides container -->
+      <div id="calmaz-carousel-slides" style="display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);will-change:transform;"></div>
+
+      <!-- Caption overlay -->
+      <div id="calmaz-carousel-caption" style="display:none;position:absolute;bottom:0;left:0;right:0;padding:20px 24px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.72));pointer-events:none;">
+        <p id="calmaz-carousel-caption-text" style="margin:0;font-size:15px;font-weight:600;color:#fff;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,0.5);"></p>
+      </div>
+
+      <!-- Arrows -->
+      <button id="calmaz-carousel-prev" onclick="calmazCarouselMove(-1)" style="display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);border:none;color:#fff;font-size:20px;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;transition:background .15s;line-height:1;" onmouseover="this.style.background='rgba(0,0,0,0.75)'" onmouseout="this.style.background='rgba(0,0,0,0.45)'">&#8249;</button>
+      <button id="calmaz-carousel-next" onclick="calmazCarouselMove(1)" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);border:none;color:#fff;font-size:20px;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;transition:background .15s;line-height:1;" onmouseover="this.style.background='rgba(0,0,0,0.75)'" onmouseout="this.style.background='rgba(0,0,0,0.45)'">&#8250;</button>
+
+      <!-- Dots -->
+      <div id="calmaz-carousel-dots" style="display:none;position:absolute;bottom:10px;right:14px;display:flex;gap:6px;z-index:10;"></div>
+
+      <!-- Placeholder while loading -->
+      <div id="calmaz-carousel-placeholder" style="width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:#031e36;">
+        <span style="color:rgba(255,255,255,0.25);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Loading&hellip;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ON AIR BAR -->
+  <div class="on-air-bar" id="on-air-bar" style="display:none;padding-bottom:12px;">
+    <span class="on-air-badge">On Air Now</span>
+    <span class="on-air-show" id="on-air-show"></span>
+    <span class="on-air-host" id="on-air-host"></span>
+    <span class="on-air-time" id="on-air-time"></span>
+    <div style="display:flex;gap:10px;margin-left:auto;flex-shrink:0;align-items:center;">
+      <a href="https://calmarizona.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#487ea6;color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;">&#9654; Listen Live on CalmArizona.com</a>
+      <button id="watch-live-btn" style="display:none;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap;border:1px solid rgba(255,255,255,.3);">&#128250; Watch Live</button>
+    </div>
+  </div>
+
+
+
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+
+  <!-- NEWS + VIDEO SIDEBAR (2/3 + 1/3) -->
+  <div id="home-top-row" style="display:grid;grid-template-columns:3fr 1fr;gap:0;align-items:start;background:#f8f9fa;">
+
+    <!-- LEFT 2/3: News -->
+    <section style="padding:48px 48px;background:#f8f9fa;" id="news-section">
+      <div class="section-header">
+        <h2 class="section-title" >Latest News</h2>
+        <a href="pages/news.html" class="section-link">View All News &rsaquo;</a>
+      </div>
+      <div class="news-grid" id="news-grid">
+        <div style="color:#546e7a;font-size:14px;padding:24px 0;">Loading news…</div>
+      </div>
+    </section>
+
+    <!-- RIGHT 1/3: Video sidebar -->
+    <div id="home-video-sidebar" style="background:#05254c;padding:24px 20px;display:flex;flex-direction:column;gap:24px;align-self:stretch;">
+
+      <!-- Courthouse Cam (hidden until enabled) -->
+      <div style="display:none;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">&#128247; Live — Courthouse Plaza</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:8px;overflow:hidden;background:#000;">
+          <iframe
+            src="https://www.youtube.com/embed/GXZg8SFR4LI?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+            allow="autoplay; fullscreen"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Sponsor Video (hidden until enabled) -->
+      <div style="display:none;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">&#9733; Sponsored</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:8px;overflow:hidden;background:#000;">
+          <iframe
+            src="https://www.youtube.com/embed/A_cuyvgU_g4?autoplay=1&mute=1&loop=1&playlist=A_cuyvgU_g4&controls=0&modestbranding=1&rel=0"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+            allow="autoplay; fullscreen"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <a href="https://olsensgrain.com" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding:8px 12px;background:rgba(255,255,255,0.07);border-radius:6px;text-decoration:none;transition:background .15s;"
+          onmouseover="this.style.background='rgba(255,255,255,0.13)'"
+          onmouseout="this.style.background='rgba(255,255,255,0.07)'">
+          <span style="font-size:12px;font-weight:700;color:#fff;">Olsen's for Healthy Animals</span>
+          <span style="font-size:10px;color:rgba(255,255,255,0.5);">olsensgrain.com &rsaquo;</span>
+        </a>
+      </div>
+
+
+      <!-- Recently Played -->
+      <div id="calmaz-recently-played">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;">&#9835; Recently Played</div>
+        <div id="calmaz-rp-list" style="display:flex;flex-direction:column;gap:1px;">
+          <div id="calmaz-rp-loading" style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Loading…</div>
+        </div>
+        <a href="https://calmarizona.com" target="_blank" rel="noopener"
+          id="calmaz-rp-footer"
+          style="display:none;align-items:center;justify-content:space-between;margin-top:12px;padding:8px 12px;background:rgba(255,255,255,0.06);border-radius:6px;text-decoration:none;transition:background .15s;border:1px solid rgba(255,255,255,0.08);"
+          onmouseover="this.style.background='rgba(255,255,255,0.12)'"
+          onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+          <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.75);">&#9654;&nbsp; Listen on CalmArizona.com</span>
+          <span style="font-size:10px;color:rgba(255,255,255,0.35);">&rsaquo;</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCHEDULE: Full width below -->
+  <section style="display:none;padding:48px 48px;background:#fff;" id="schedule-section">
+    <div>
+      <div class="section-header">
+        <h2 class="section-title" >Today's Lineup</h2>
+        <a href="pages/schedule.html" class="section-link">Full Schedule &rsaquo;</a>
+      </div>
+      <div class="schedule-grid" id="schedule-grid">
+        <div style="color:#546e7a;font-size:14px;padding:24px 0;">Loading schedule…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Responsive -->
+  <style>
+    @media (max-width: 900px) {
+      #home-top-row { grid-template-columns: 1fr !important; }
+      #home-video-sidebar { align-self:auto !important; }
+    }
+  </style>
+
+  <div id="site-footer"></div>
+  <script src="js/layout.js?v=28" data-depth="0"></script>
+  
+<script>
+(function() {
+  var API = 'https://pbc-cms-production.up.railway.app';
+
+  Promise.all([
+    fetch(API + '/api/stations/calmaz').then(function(r){return r.json();}),
+    fetch(API + '/api/pages/calmaz-home').then(function(r){return r.json();}).catch(function(){return {}; }),
+    fetch(API + '/api/station-globals/calmaz').then(function(r){return r.json();}).catch(function(){return {};})
+  ]).then(function(res) {
+    var s = res[0];
+    var p = res[1];
+    var globals = res[2] || {};
+    function activePages() {
+      if (!globals.active_pages) return ['home','news','events','podcasts','schedule','shows','advertise','about','fcc','contact','public-inspection-help','employment','archive'];
+      if (Array.isArray(globals.active_pages)) return globals.active_pages;
+      try { return JSON.parse(globals.active_pages); } catch(e) { return ['home','news','events','podcasts','schedule','shows','advertise','about','fcc','contact','public-inspection-help','employment','archive']; }
+    }
+    var scheduleActive = activePages().indexOf('schedule') !== -1;
+    var scheduleSection = document.getElementById('schedule-section');
+    if (scheduleSection) scheduleSection.style.display = scheduleActive ? 'block' : 'none';
+    // home_video_sidebar_enabled controls video blocks only — sidebar always visible (recently played lives here)
+    var videosEnabled = !(globals.home_video_sidebar_enabled === false || globals.home_video_sidebar_enabled === 'false' || globals.home_video_sidebar_enabled === '0');
+    if (videosEnabled) {
+      // Show the video blocks when enabled
+      var videoBlocks = document.querySelectorAll('#home-video-sidebar > div[style*="display:none"]');
+      videoBlocks.forEach(function(el) { el.style.display = 'block'; });
+    }
+
+    // ── ON AIR — from real schedule ────────────────────────────
+    function updateHomeOnAirBar() {
+      fetch(API + '/api/schedule/calmaz').then(function(r){return r.json();}).then(function(d) {
+        var slots = d.slots || [];
+        var now = new Date();
+        var nowH = now.getHours();
+        var dow = now.getDay();
+        var todayGroup = dow === 0 ? 'sun' : dow === 6 ? 'sat' : dow === 1 ? 'mon' : 'tue-fri';
+        var current = slots.find(function(sl) {
+          return sl.day_group === todayGroup && sl.start_hour <= nowH && sl.end_hour > nowH;
+        });
+        if (!current && todayGroup === 'mon') {
+          current = slots.find(function(sl) {
+            return sl.day_group === 'tue-fri' && sl.start_hour <= nowH && sl.end_hour > nowH;
+          });
+        }
+        var bar = document.getElementById('on-air-bar');
+        var watchBtn = document.getElementById('watch-live-btn');
+        if (!current) {
+          if (bar) bar.style.display = 'none';
+          if (watchBtn) { watchBtn.style.display = 'none'; watchBtn.removeAttribute('data-video-url'); }
+          window.CALMAZ_CURRENT_VIDEO_URL = null;
+          if (typeof setStickyOffsets === 'function') setTimeout(setStickyOffsets, 50);
+          return;
+        }
+        function fmtH(h) { if(h===0)return'12:00 AM'; if(h===12)return'12:00 PM'; return h<12?h+':00 AM':(h-12)+':00 PM'; }
+        document.getElementById('on-air-show').textContent = current.name;
+        document.getElementById('on-air-host').textContent = '';
+        document.getElementById('on-air-time').textContent = fmtH(current.start_hour) + ' – ' + fmtH(current.end_hour);
+        if (bar) bar.style.display = 'flex';
+        if (watchBtn) {
+          if (current.video_url) {
+            watchBtn.style.display = 'inline-flex';
+            watchBtn.setAttribute('data-video-url', current.video_url);
+            window.CALMAZ_CURRENT_VIDEO_URL = current.video_url;
+          } else {
+            watchBtn.style.display = 'none';
+            watchBtn.removeAttribute('data-video-url');
+            window.CALMAZ_CURRENT_VIDEO_URL = null;
+          }
+        }
+        if (typeof setStickyOffsets === 'function') setTimeout(setStickyOffsets, 50);
+      }).catch(function(){});
+    }
+    updateHomeOnAirBar();
+    if (!window.CALMAZ_HOME_ON_AIR_TIMER) window.CALMAZ_HOME_ON_AIR_TIMER = setInterval(updateHomeOnAirBar, 60000);
+    window.addEventListener('focus', updateHomeOnAirBar);
+    document.addEventListener('visibilitychange', function(){ if (!document.hidden) updateHomeOnAirBar(); });
+
+    // ── HERO IMAGE ───────────────────────────────────────────────
+    // p.hero_image from CMS — prefix with API base URL
+    if (p.hero_image) {
+      var heroSection = document.getElementById('hero-section');
+      var heroSrc = p.hero_image.startsWith('http') ? p.hero_image : p.hero_image.startsWith('/') ? 'https://pbc-cms-production.up.railway.app' + p.hero_image : 'https://pbc-cms-production.up.railway.app/' + p.hero_image;
+      if (heroSection) {
+        heroSection.style.minHeight = '';
+        heroSection.style.display = 'block';
+        heroSection.style.background = '#05254c';
+        heroSection.innerHTML = '<img src="' + heroSrc + '" alt="CALMAZ" style="width:100%;display:block;height:auto;" onerror="this.style.display=\'none\'" />';
+      }
+    }
+
+    
+
+    // ── NEWS ─────────────────────────────────────────────────────
+    fetch(API + '/api/news?limit=6').then(function(r){return r.json();}).then(function(d) {
+      var items = (d.items || d) || [];
+      var grid = document.getElementById('news-grid');
+      if (!items.length) { grid.innerHTML = '<p style="color:#546e7a">No news yet.</p>'; return; }
+      grid.innerHTML = items.map(function(n) {
+        var img = n.image ? (n.image.startsWith('http') ? n.image : n.image.startsWith('/uploads/') ? 'https://pbc-cms-production.up.railway.app' + n.image : 'https://pbc-cms-production.up.railway.app/' + n.image) : 'images/news-placeholder.png';
+        var date = n.published_at ? new Date(n.published_at.slice(0,10)+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+        return '<a href="pages/article.html?id=' + n.id + '" class="news-card" style="text-decoration:none;color:inherit;display:block;">'
+          + '<img src="'+img+'" class="news-card-img" alt="'+n.headline+'" style="object-fit:contain;background:#f4f6f8;" onerror="this.src=&quot;images/news-placeholder.png&quot;" />'
+          + '<div class="news-card-body">'
+          + (n.category ? '<div class="news-card-cat">'+n.category+'</div>' : '')
+          + '<div class="news-card-title">'+n.headline+'</div>'
+          + '<div class="news-card-date">'+date+'</div>'
+          + '</div></a>';
+      }).join('');
+    }).catch(function(){});
+
+    // ── SCHEDULE — from new schedule API, current + upcoming ─────
+    fetch(API + '/api/schedule/calmaz').then(function(r){return r.json();}).then(function(d) {
+      var slots = d.slots || [];
+      var grid = document.getElementById('schedule-grid');
+      if (!slots.length) { grid.innerHTML = '<p style="color:#546e7a">Schedule coming soon.</p>'; return; }
+
+      var now = new Date();
+      var nowH = now.getHours();
+      // Determine today's day group
+      var dow = now.getDay(); // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+      var todayGroup = dow === 0 ? 'sun' : dow === 6 ? 'sat' : dow === 1 ? 'mon' : 'tue-fri';
+
+      // Get today's slots, sorted by start_hour
+      var todaySlots = slots.filter(function(sl) {
+        return sl.day_group === todayGroup || (todayGroup === 'mon' && sl.day_group === 'tue-fri');
+      });
+      // Prefer exact day_group match over tue-fri fallback for mon
+      if (todayGroup === 'mon') {
+        var monSlots = slots.filter(function(sl){ return sl.day_group === 'mon'; });
+        var tuefriSlots = slots.filter(function(sl){ return sl.day_group === 'tue-fri'; });
+        // Merge: for each hour, prefer mon slot, fall back to tue-fri
+        var merged = {};
+        tuefriSlots.forEach(function(sl){ merged[sl.start_hour] = sl; });
+        monSlots.forEach(function(sl){ merged[sl.start_hour] = sl; }); // mon overrides
+        todaySlots = Object.values(merged).sort(function(a,b){ return a.start_hour - b.start_hour; });
+      } else {
+        todaySlots = todaySlots.sort(function(a,b){ return a.start_hour - b.start_hour; });
+      }
+
+      // Find current slot and next 5
+      var currentIdx = -1;
+      for (var i = 0; i < todaySlots.length; i++) {
+        if (todaySlots[i].start_hour <= nowH && todaySlots[i].end_hour > nowH) {
+          currentIdx = i; break;
+        }
+      }
+      var startFrom = currentIdx >= 0 ? currentIdx : todaySlots.findIndex(function(sl){ return sl.start_hour > nowH; });
+      if (startFrom < 0) startFrom = 0;
+      var display = todaySlots.slice(startFrom, startFrom + 6);
+
+      function fmtH(h) {
+        if (h === 0) return '12:00 AM';
+        if (h === 12) return '12:00 PM';
+        return h < 12 ? h + ':00 AM' : (h-12) + ':00 PM';
+      }
+
+      grid.innerHTML = display.map(function(sl, i) {
+        var isNow = sl.start_hour <= nowH && sl.end_hour > nowH;
+        return '<div class="schedule-card'+(isNow?' on-air-now':'')+'">'
+          + '<div class="schedule-time">'+(isNow?'&#9654; On Air Now &mdash; ':'')+fmtH(sl.start_hour)+' &ndash; '+fmtH(sl.end_hour)+'</div>'
+          + '<div class="schedule-show">'+(sl.name||'')+'</div>'
+          + '</div>';
+      }).join('');
+    }).catch(function(){});
+
+  }).catch(function(e){ console.error('CALMAZ home error:', e); });
+
+})();
+</script>
+<script src="js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+
+<script>
+(function() {
+  var CMS_API    = 'https://pbc-cms-production.up.railway.app';
+  var POLL_MS    = 30000;
+  var rpTimer    = null;
+
+  function toTitleCase(str) {
+    var smalls = {'a':1,'an':1,'the':1,'and':1,'but':1,'or':1,'for':1,'in':1,'on':1,'at':1,'to':1,'of':1};
+    return str.toLowerCase().replace(/\w\S*/g, function(word, idx) {
+      if (idx > 0 && smalls[word]) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+  }
+
+  function parseMeta(meta) {
+    if (!meta) return { artist: '', title: 'Unknown' };
+    var dash = meta.indexOf(' - ');
+    if (dash !== -1) {
+      return {
+        artist: toTitleCase(meta.substring(0, dash).trim()),
+        title:  toTitleCase(meta.substring(dash + 3).trim())
+      };
+    }
+    return { artist: '', title: toTitleCase(meta.trim()) };
+  }
+
+  function fmtTime(dateStr) {
+    if (!dateStr) return '';
+    try {
+      var d = new Date(dateStr.replace(' ', 'T') + 'Z');
+      if (isNaN(d.getTime())) return '';
+      // Arizona is UTC-7 year-round (no DST)
+      var az = new Date(d.getTime() - 7 * 60 * 60 * 1000);
+      var h = az.getUTCHours(), m = az.getUTCMinutes();
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+    } catch(e) { return ''; }
+  }
+
+  function renderTracks(tracks) {
+    var list   = document.getElementById('calmaz-rp-list');
+    var footer = document.getElementById('calmaz-rp-footer');
+    if (!list) return;
+
+    if (!tracks || !tracks.length) {
+      list.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">No track data</div>';
+      return;
+    }
+
+    var html = '';
+    tracks.forEach(function(t, i) {
+      var p      = parseMeta(t.meta);
+      var isNow  = (i === 0 || t.is_current === true);
+      var time   = t.localtime || fmtTime(t.created_at);
+
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;' +
+        (i > 0 ? 'border-top:1px solid rgba(255,255,255,0.06);' : '') +
+        (isNow ? 'background:rgba(72,126,166,0.1);margin:0 -20px;padding:8px 20px;border-radius:0;' : '') +
+        '">';
+
+      // Index / now-playing dot
+      html += '<span style="font-size:9px;font-weight:800;color:' +
+        (isNow ? '#487ea6' : 'rgba(255,255,255,0.2)') +
+        ';width:14px;flex-shrink:0;text-align:center;">' +
+        (isNow ? '&#9679;' : i) +
+        '</span>';
+
+      // Music note
+      html += '<span style="font-size:12px;color:' +
+        (isNow ? '#487ea6' : 'rgba(255,255,255,0.2)') +
+        ';flex-shrink:0;">&#9835;</span>';
+
+      // Track info
+      html += '<div style="flex:1;min-width:0;">';
+      if (p.artist) {
+        html += '<div style="font-size:11px;font-weight:' + (isNow ? '800' : '600') +
+          ';color:' + (isNow ? '#fff' : 'rgba(255,255,255,0.75)') +
+          ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + p.artist + '</div>';
+        html += '<div style="font-size:10px;color:rgba(255,255,255,0.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;">' + p.title + '</div>';
+      } else {
+        html += '<div style="font-size:11px;font-weight:' + (isNow ? '800' : '600') +
+          ';color:' + (isNow ? '#fff' : 'rgba(255,255,255,0.75)') +
+          ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + p.title + '</div>';
+      }
+      html += '</div>';
+
+      // Time
+      if (time) {
+        html += '<span style="font-size:9px;color:rgba(255,255,255,0.2);flex-shrink:0;white-space:nowrap;">' + time + '</span>';
+      }
+
+      html += '</div>';
+    });
+
+    list.innerHTML = html;
+    if (footer) footer.style.display = 'flex';
+  }
+
+  function loadTracks() {
+    fetch(CMS_API + '/api/recent-tracks/kahm?ts=' + Date.now())
+      .then(function(r) { return r.json(); })
+      .then(function(tracks) {
+        if (!tracks || !tracks.length) return;
+        renderTracks(tracks.map(function(t, i) {
+          return {
+            meta: t.artist.toUpperCase() + ' - ' + t.title.toUpperCase(),
+            image_url: null,
+            created_at: null,
+            localtime: t.localtime,
+            is_current: i === 0
+          };
+        }));
+      })
+      .catch(function() {
+        var list = document.getElementById('calmaz-rp-list');
+        if (list && list.children.length <= 1) {
+          list.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Unable to load track data</div>';
+        }
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Only run if the widget is on the page
+    if (!document.getElementById('calmaz-recently-played')) return;
+    loadTracks();
+    rpTimer = setInterval(loadTracks, POLL_MS);
+  });
+})();
+</script>
+
+<script>
+// ── CALMAZ Hero Carousel ────────────────────────────────────────────────────────
+(function() {
+  var CMS = 'https://pbc-cms-production.up.railway.app';
+  var slides = [];
+  var current = 0;
+  var timer = null;
+  var INTERVAL = 5000; // default; overridden by globals below
+
+  function renderCarousel(data) {
+    var wrap      = document.getElementById('calmaz-carousel-wrap');
+    var container = document.getElementById('calmaz-carousel-slides');
+    var caption   = document.getElementById('calmaz-carousel-caption');
+    var captText  = document.getElementById('calmaz-carousel-caption-text');
+    var prev      = document.getElementById('calmaz-carousel-prev');
+    var next      = document.getElementById('calmaz-carousel-next');
+    var dotsEl    = document.getElementById('calmaz-carousel-dots');
+    var placeholder = document.getElementById('calmaz-carousel-placeholder');
+
+    if (!data || !data.length) {
+      if (placeholder) placeholder.innerHTML = '<span style="color:rgba(255,255,255,0.2);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">No slides yet</span>';
+      return;
+    }
+
+    slides = data;
+    if (placeholder) placeholder.style.display = 'none';
+
+    // Build slides
+    container.innerHTML = data.map(function(s) {
+      var src = s.image_url.startsWith('http') ? s.image_url : CMS + '/' + s.image_url;
+      return '<div style="min-width:100%;width:100%;flex-shrink:0;">'
+        + '<img src="' + src + '" alt="' + (s.caption || '') + '" '
+        + 'style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;" '
+        + 'loading="lazy" />'
+        + '</div>';
+    }).join('');
+
+    // Dots
+    dotsEl.style.display = 'flex';
+    dotsEl.innerHTML = data.map(function(_, i) {
+      return '<button onclick="calmazCarouselGoTo(' + i + ')" '
+        + 'id="calmaz-dot-' + i + '" '
+        + 'style="width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;padding:0;transition:background .2s,transform .2s;background:' + (i===0?'#fff':'rgba(255,255,255,0.4)') + ';transform:' + (i===0?'scale(1.3)':'scale(1)') + ';">'
+        + '</button>';
+    }).join('');
+
+    // Arrows (only if multiple slides)
+    if (data.length > 1) {
+      prev.style.display = 'flex';
+      next.style.display = 'flex';
+    }
+
+    // Caption
+    if (data[0].caption) {
+      caption.style.display = 'block';
+      captText.textContent = data[0].caption;
+    }
+
+    // Start autoplay
+    startTimer();
+
+    // Pause on hover
+    wrap.addEventListener('mouseenter', function() { clearInterval(timer); });
+    wrap.addEventListener('mouseleave', startTimer);
+  }
+
+  function goTo(idx) {
+    if (!slides.length) return;
+    var container = document.getElementById('calmaz-carousel-slides');
+    var caption   = document.getElementById('calmaz-carousel-caption');
+    var captText  = document.getElementById('calmaz-carousel-caption-text');
+
+    var next = ((idx % slides.length) + slides.length) % slides.length;
+    // If wrapping (e.g. last→first or first→last), disable transition briefly
+    if (Math.abs(next - current) > 1) {
+      container.style.transition = 'none';
+      setTimeout(function() {
+        container.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
+      }, 20);
+    }
+    current = next;
+    container.style.transform = 'translateX(-' + (current * 100) + '%)';
+
+    // Update dots
+    slides.forEach(function(_, i) {
+      var dot = document.getElementById('calmaz-dot-' + i);
+      if (dot) {
+        dot.style.background = i === current ? '#fff' : 'rgba(255,255,255,0.4)';
+        dot.style.transform  = i === current ? 'scale(1.3)' : 'scale(1)';
+      }
+    });
+
+    // Update caption
+    var cap = slides[current].caption;
+    if (cap) {
+      caption.style.display = 'block';
+      captText.textContent = cap;
+    } else {
+      caption.style.display = 'none';
+    }
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    if (slides.length > 1) {
+      timer = setInterval(function() { goTo(current + 1); }, INTERVAL);
+    }
+  }
+
+  // Public functions for onclick handlers
+  window.calmazCarouselMove = function(dir) { clearInterval(timer); goTo(current + dir); startTimer(); };
+  window.calmazCarouselGoTo = function(idx) { clearInterval(timer); goTo(idx); startTimer(); };
+
+  // Load slides
+  document.addEventListener('DOMContentLoaded', function() {
+    // Read carousel delay from station globals
+    fetch(CMS + '/api/station-globals/calmaz')
+      .then(function(r) { return r.json(); })
+      .then(function(g) {
+        var delay = parseInt(g.carousel_delay_seconds || 0, 10);
+        if (delay >= 2 && delay <= 30) INTERVAL = delay * 1000;
+      })
+      .catch(function() {});
+
+    fetch(CMS + '/api/hero-slides/kahm')
+      .then(function(r) { return r.json(); })
+      .then(renderCarousel)
+      .catch(function() {
+        var ph = document.getElementById('calmaz-carousel-placeholder');
+        if (ph) ph.innerHTML = '<span style="color:rgba(255,255,255,0.2);font-size:12px;letter-spacing:.08em;text-transform:uppercase;">No slides configured</span>';
+      });
+  });
+})();
+</script>
+</body>
+</html>

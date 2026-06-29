@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Schedule — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+    .schedule-wrap { padding: 40px 48px; max-width: var(--max-width); margin: 0 auto; }
+    .schedule-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .schedule-table th {
+      padding: 10px 12px;
+      background: #05254c;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .schedule-table th.time-col { width: 70px; background: #0a2239; }
+    .schedule-table td.time-cell {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #546e7a;
+      white-space: nowrap;
+      border: 1px solid #e8ecf0;
+      vertical-align: top;
+      background: #f8f9fa;
+      text-align: right;
+    }
+    .schedule-table td.show-cell {
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.2);
+      text-align: center;
+      vertical-align: middle;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.4;
+      cursor: default;
+    }
+    .schedule-table td.show-cell a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+    .schedule-table td.empty-cell {
+      border: 1px solid #e8ecf0;
+      background: #fff;
+    }
+    .schedule-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .schedule-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+    }
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .schedule-wrap { padding: 24px 16px; }
+      .schedule-table { font-size: 11px; }
+      .schedule-table th, .schedule-table td { padding: 5px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  </div>
+
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+  </div>
+
+  <div class="page-hero">
+    <h1>Program Schedule</h1>
+    <p>CalmArizona — FM 102.1</p>
+  </div>
+
+  <div class="schedule-wrap">
+    <div class="schedule-controls">
+      <div style="font-size:13px;color:#546e7a;">All times are Mountain Time (AZ). Schedule subject to change.</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="schedule-table" id="schedule-table">
+        <thead>
+          <tr>
+            <th class="time-col">Time</th>
+            <th>Monday</th>
+            <th>Tue – Fri</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body">
+          <tr><td colspan="5" style="text-align:center;padding:40px;color:#546e7a;">Loading schedule…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="schedule-legend" id="schedule-legend"></div>
+  </div>
+
+  <div id="site-footer"></div>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+  (function() {
+    var API = 'https://pbc-cms-production.up.railway.app';
+    var DAY_GROUPS = ['mon','tue-fri','sat','sun'];
+
+    function hourLabel(h) {
+      if (h === 0) return '12:00 am';
+      if (h === 12) return '12:00 pm';
+      return h < 12 ? h + ':00 am' : (h - 12) + ':00 pm';
+    }
+
+    fetch(API + '/api/schedule/calmaz')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var shows = d.shows || [];
+        var slots = d.slots || [];
+        var tbody = document.getElementById('schedule-body');
+        var legend = document.getElementById('schedule-legend');
+
+        if (!slots.length) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:#546e7a;">Schedule coming soon.</td></tr>';
+          return;
+        }
+
+        // Build grid: for each hour, for each day group, find the slot
+        var rows = '';
+        // Track which cells are already covered by a rowspan
+        var covered = {}; // key: "day-hour"
+
+        for (var h = 0; h < 24; h++) {
+          rows += '<tr>';
+          rows += '<td class="time-cell">' + hourLabel(h) + '</td>';
+
+          DAY_GROUPS.forEach(function(day) {
+            var key = day + '-' + h;
+            if (covered[key]) return; // already covered by rowspan above
+
+            // Find slot that covers this hour
+            var slot = null;
+            for (var i = 0; i < slots.length; i++) {
+              if (slots[i].day_group === day && slots[i].start_hour <= h && slots[i].end_hour > h) {
+                slot = slots[i];
+                break;
+              }
+            }
+
+            if (slot && slot.start_hour === h) {
+              var span = slot.end_hour - slot.start_hour;
+              // Mark future hours as covered
+              for (var fh = h + 1; fh < slot.end_hour; fh++) {
+                covered[day + '-' + fh] = true;
+              }
+              var content = slot.link_url
+                ? '<a href="' + slot.link_url + '" target="_blank">' + slot.name + '</a>'
+                : slot.name;
+              rows += '<td class="show-cell" rowspan="' + span + '" style="background:' + slot.color + ';color:' + (slot.text_color || '#fff') + ';">' + content + '</td>';
+            } else if (!slot) {
+              rows += '<td class="empty-cell"></td>';
+            }
+          });
+
+          rows += '</tr>';
+        }
+
+        tbody.innerHTML = rows;
+
+        // Legend
+        legend.innerHTML = shows.map(function(s) {
+          return '<div class="legend-item">'
+            + '<div class="legend-swatch" style="background:' + s.color + ';"></div>'
+            + s.name
+            + '</div>';
+        }).join('');
+      })
+      .catch(function() {
+        document.getElementById('schedule-body').innerHTML =
+          '<tr><td colspan="5" style="text-align:center;padding:40px;color:#487ea6;">Could not load schedule.</td></tr>';
+      });
+  })();
+  </script>
+<script>
+(function() {
+  var s = document.getElementById('pbc-page-bg');
+  if (!s) { s = document.createElement('style'); s.id = 'pbc-page-bg'; document.head.appendChild(s); }
+  s.textContent = 'body, .page-hero, .content-wrap, .schedule-wrap, #shows-content { background: #f8f9fa !important; }';
+})();
+</script>
+<script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>

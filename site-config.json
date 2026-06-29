@@ -1,0 +1,70 @@
+{
+  "site": {
+    "name": "CalmArizona",
+    "tagline": "Music Beautiful as Prescott",
+    "stationId": "calmaz",
+    "logo": "images/logo-calmaz.png",
+    "logoWhite": "images/logo-calmaz.png",
+    "favicon": "images/logo-calmaz.png",
+    "apiBase": "https://pbc-cms-production.up.railway.app",
+    "social": {
+      "facebook": "https://facebook.com/prescottbroadcasting",
+      "instagram": "https://instagram.com/prescottbroadcasting",
+      "youtube": "https://youtube.com/prescottbroadcasting",
+      "email": "mailto:info@prescottbroadcasting.com"
+    }
+  },
+  "station": {
+    "id": "calmaz",
+    "name": "CalmArizona",
+    "fullName": "CalmArizona",
+    "frequency": "KAHM FM 102.1",
+    "tagline": "Music Beautiful as Prescott",
+    "accentColor": "#487ea6",
+    "listenUrl": "https://calmarizona.com",
+    "phone": "(928) 445-1700",
+    "email": "info@prescottbroadcasting.com",
+    "address": "500 Henry Street",
+    "city": "Prescott, Arizona 86301",
+    "streamUrl": "",
+    "playerUrl": "https://player.streamguys.com/prescott/kahm/sgplayer/player.php"
+  },
+  "nav": {
+    "links": [
+      { "label": "Home", "url": "/index.html" },
+      { "label": "News", "url": "/pages/news.html" },
+      { "label": "Events", "url": "/pages/events.html" },
+      { "label": "Podcasts", "url": "/pages/podcasts.html" },
+      { "label": "Schedule", "url": "/pages/schedule.html" },
+      { "label": "Shows", "url": "/pages/shows.html" },
+      { "label": "Advertise", "url": "/pages/advertise.html" },
+      { "label": "About", "url": "/pages/about.html" },
+      { "label": "FCC Applications", "url": "/pages/fcc.html" },
+      { "label": "Contact", "url": "/pages/contact.html" }
+    ]
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Station Info",
+        "links": [
+          { "label": "About", "url": "pages/about.html" },
+          { "label": "Shows", "url": "pages/shows.html" },
+          { "label": "FCC Applications", "url": "pages/fcc.html" },
+          { "label": "Employment", "url": "pages/employment.html" },
+          { "label": "Archive", "url": "pages/archive.html" },
+          { "label": "Prescott Broadcasting", "url": "https://prescottbroadcasting.com" },
+          { "label": "Public Inspection File", "url": "https://publicfiles.fcc.gov/fm-profile/kahm" },
+          { "label": "Public Inspection File Help", "url": "pages/public-inspection-help.html" },
+          { "label": "EEO", "url": "pages/eeo.html" },
+          { "label": "CMS Login", "url": "https://pbc-cms-production.up.railway.app/admin/" }
+        ]
+      }
+    ],
+    "legal": {
+      "copyright": "\u00a9 2026 Prescott Broadcasting, LLC. All Rights Reserved.",
+      "privacyPolicyUrl": "/pages/privacy.html",
+      "termsUrl": "/pages/terms.html"
+    }
+  }
+}

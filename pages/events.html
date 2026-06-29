@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-calmaz.png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events — CalmArizona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/calmaz-base.css?v=28" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=28" />
+  <style id="nav-critical">
+    nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
+    .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
+    .nav-logo img{height:180px;width:auto;object-fit:contain;}
+    .nav-search{background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;display:flex;align-items:center;}
+    .nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:#1a2f4e;padding:6px;}
+    @media(max-width:900px){.main-nav-inner{padding:0 20px;}}
+    @media(max-width:640px){.nav-links-wrap{display:none !important;}.nav-hamburger{display:flex !important;}}
+  </style>
+  <style>
+    .page-hero-img{width:100%;display:block;object-fit:cover;}
+    /* ── CALENDAR LAYOUT ── */
+    .events-wrap{max-width:1400px;margin:0 auto;padding:40px 24px;}
+    .cal-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+    .cal-month{font-size:22px;font-weight:800;color:#05254c;}
+    .cal-nav-btns{display:flex;gap:8px;}
+    .cal-btn{background:#fff;border:1.5px solid #e8ecf0;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:20px;font-family:inherit;transition:background .15s;color:#05254c;line-height:1;}
+    .cal-btn:hover{background:#f4f6f8;}
+    /* Fixed-width 7-column calendar */
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid #e8ecf0;border-top:1px solid #e8ecf0;margin-bottom:40px;}
+    .cal-dow{text-align:center;font-size:11px;font-weight:700;color:#546e7a;text-transform:uppercase;padding:10px 4px;background:#f8f9fa;border-right:1px solid #e8ecf0;border-bottom:1px solid #e8ecf0;}
+    .cal-day{min-height:100px;padding:8px 6px;border-right:1px solid #e8ecf0;border-bottom:1px solid #e8ecf0;background:#fff;cursor:default;transition:background .12s;overflow:hidden;}
+    .cal-day.other-month{background:#fafafa;}
+    .cal-day.other-month .cal-day-num{color:#ccc;}
+    .cal-day.today{background:#f0f6fb;}
+    .cal-day.today .cal-day-num{color:#1565c0;font-weight:800;}
+    .cal-day.has-events{cursor:pointer;}
+    .cal-day.has-events:hover{background:#f8fbff;}
+    .cal-day.selected{background:#fff5f5 !important;outline:2px solid #487ea6;outline-offset:-2px;}
+    .cal-day-num{font-size:13px;font-weight:600;color:#05254c;margin-bottom:4px;}
+    .cal-pills{display:flex;flex-direction:column;gap:2px;}
+    .cal-pill{font-size:10px;font-weight:600;padding:2px 5px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;}
+    /* ── LEGEND ── */
+    .cat-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;}
+    .cat-legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:#444;cursor:default;}
+    .cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    /* ── EVENTS LIST (below calendar) ── */
+    .events-list-section{margin-top:8px;}
+    .events-list-title{font-size:18px;font-weight:800;color:#05254c;margin-bottom:20px;padding-bottom:10px;border-bottom:3px solid #487ea6;display:inline-block;}
+    .events-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+    .event-card{background:#fff;border-radius:8px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.08);border-left:4px solid #487ea6;}
+    .event-card-date{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#487ea6;margin-bottom:4px;}
+    .event-card-cat{display:inline-block;padding:2px 9px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:8px;}
+    .event-card-title{font-size:15px;font-weight:700;color:#05254c;line-height:1.3;margin-bottom:6px;}
+    .event-card-loc{font-size:12px;color:#546e7a;margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+    .event-card-desc{font-size:13px;color:#444;line-height:1.6;margin-bottom:10px;}
+    .event-card-link{font-size:11px;font-weight:700;color:#487ea6;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;}
+    .event-card-link:hover{color:#315f83;}
+    .no-events{text-align:center;padding:40px 24px;color:#546e7a;font-size:14px;}
+
+    /* ── EVENT SUBMISSION FORM ───────────────────────── */
+    .event-submit-section { background: #f8f9fa; padding: 24px 0 64px; }
+    .event-submit-inner { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+    .event-submit-header { text-align: center; margin-bottom: 40px; }
+    .event-submit-header h2 { font-size: clamp(24px,3vw,34px); font-weight: 900; color: #05254c; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 10px; }
+    .event-submit-header h2::after { content: ''; display: block; width: 48px; height: 4px; background: #487ea6; margin: 10px auto 0; }
+    .event-submit-header p { font-size: 14px; color: #546e7a; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+    .esf-card { background: #fff; border-radius: 12px; padding: 36px; box-shadow: 0 2px 20px rgba(0,0,0,.07); }
+    .esf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .esf-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+    .esf-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .esf-field label { font-size: 11px; font-weight: 700; color: #546e7a; text-transform: uppercase; letter-spacing: .05em; }
+    .esf-field input, .esf-field select, .esf-field textarea { padding: 10px 14px; border: 1.5px solid #dde3ea; border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; background: #fff; transition: border-color .15s; color: #1a2f4e; }
+    .esf-field input:focus, .esf-field select:focus, .esf-field textarea:focus { border-color: #05254c; box-shadow: 0 0 0 3px rgba(3,42,72,.07); }
+    .esf-field textarea { min-height: 100px; resize: vertical; }
+    .esf-submit-row { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; flex-wrap: wrap; gap: 12px; }
+    .esf-submit { padding: 13px 36px; background: #487ea6; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: .06em; transition: background .15s; }
+    .esf-submit:hover { background: #315f83; }
+    .esf-disclaimer { font-size: 12px; color: #90a4ae; max-width: 360px; line-height: 1.5; }
+    .esf-success { display: none; text-align: center; padding: 48px 24px; }
+    .esf-success-icon { font-size: 44px; margin-bottom: 14px; }
+    .esf-success h3 { font-size: 20px; font-weight: 800; color: #05254c; margin-bottom: 8px; }
+    .esf-success p { color: #546e7a; font-size: 14px; }
+    @media(max-width:640px) { .esf-card { padding: 20px 14px; } .esf-row, .esf-row.triple { grid-template-columns: 1fr; } }
+
+    @media(max-width:768px){
+      .cal-day{min-height:60px;}
+      .events-cards{grid-template-columns:1fr;}
+    }
+
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  </div>
+
+  <!-- WEATHER BAND -->
+  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+    <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
+    </div>
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+      <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
+      <div id="calmaz-weather-player"></div>
+    </div>
+  </div>
+  <div id="calmaz-ad-banner" style="display:none;text-align:center;padding:12px 0;background:#f8f9fa;border-bottom:1px solid #e8ecf0;"></div>
+  </div>
+  <div class="page-hero">
+    <h1>Events</h1>
+    <p>Community events in Prescott and across Yavapai County.</p>
+  </div>
+
+<div class="events-wrap">
+  <div class="cal-header-row">
+    <div class="cal-month" id="cal-month-label"></div>
+    <div class="cal-nav-btns">
+      <button class="cal-btn" id="prev-month">&#8249;</button>
+      <button class="cal-btn" id="next-month">&#8250;</button>
+    </div>
+  </div>
+  <div class="cat-legend" id="cat-legend"></div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div class="events-list-section">
+    <div class="events-list-title" id="events-list-title">All Upcoming Events</div>
+    <div class="events-cards" id="events-cards"></div>
+  </div>
+</div>
+
+
+<section class="event-submit-section">
+  <div class="event-submit-inner">
+    <div class="event-submit-header">
+      <h2 id="esf-heading">Submit an Event</h2>
+      <p id="esf-subtext">Have a community event you'd like listed on our calendar? Fill out the form below and we'll get it added.</p>
+    </div>
+    <div class="esf-card">
+      <div id="esf-success" class="esf-success">
+        <div class="esf-success-icon">📅</div>
+        <h3>Event Submitted!</h3>
+        <p>Thank you! Your event has been submitted for review. Once approved by our team it will appear on the community calendar.</p>
+      </div>
+      <form id="esf-form" onsubmit="submitEventForm(event)">
+        <div class="esf-field">
+          <label>Event Title *</label>
+          <input type="text" name="title" required placeholder="Name of your event" />
+        </div>
+        <div class="esf-row">
+          <div class="esf-field">
+            <label>Event Date *</label>
+            <input type="date" name="event_date" required />
+          </div>
+          <div class="esf-field">
+            <label>Event Time</label>
+            <input type="time" name="event_time" />
+          </div>
+        </div>
+        <div class="esf-row">
+          <div class="esf-field">
+            <label>Category</label>
+            <select name="category">
+              <option value="">— Select —</option>
+              <option>Community</option>
+              <option>Music</option>
+              <option>Sports</option>
+              <option>Government</option>
+              <option>Business</option>
+              <option>Arts &amp; Culture</option>
+              <option>Health</option>
+              <option>Education</option>
+              <option>Fundraiser</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="esf-field">
+            <label>Location</label>
+            <input type="text" name="location" placeholder="Venue name or address" />
+          </div>
+        </div>
+        <div class="esf-field">
+          <label>Description</label>
+          <textarea name="description" placeholder="Tell us a bit about the event — what it is, who it's for, what to expect."></textarea>
+        </div>
+        <div class="esf-row">
+          <div class="esf-field">
+            <label>Your Name *</label>
+            <input type="text" name="contact_name" required placeholder="Full name" />
+          </div>
+          <div class="esf-field">
+            <label>Your Email *</label>
+            <input type="email" name="contact_email" required placeholder="you@example.com" />
+          </div>
+        </div>
+        <div class="esf-submit-row">
+          <p class="esf-disclaimer">Event submissions are reviewed before being added to the calendar.</p>
+          <button type="submit" class="esf-submit">Submit Event →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+// Load event form heading/subtext from CMS if set
+(function(){
+  var API = 'https://pbc-cms-production.up.railway.app';
+  fetch(API + '/api/globals').then(function(r){return r.json();}).then(function(g){
+    if (g.event_form_heading) document.getElementById('esf-heading').textContent = g.event_form_heading;
+    if (g.event_form_subtext) document.getElementById('esf-subtext').textContent = g.event_form_subtext;
+  }).catch(function(){});
+})();
+
+function submitEventForm(e) {
+  e.preventDefault();
+  var form = document.getElementById('esf-form');
+  var data = {};
+  new FormData(form).forEach(function(v, k) { data[k] = v; });
+  var btn = form.querySelector('.esf-submit');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  fetch('https://pbc-cms-production.up.railway.app/api/submit/event-calendar', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  }).then(function(r){return r.json();}).then(function(res){
+    if (res.ok) {
+      form.style.display = 'none';
+      document.getElementById('esf-success').style.display = 'block';
+    } else { btn.disabled = false; btn.textContent = 'Submit Event →'; alert('Something went wrong. Please try again.'); }
+  }).catch(function(){ btn.disabled = false; btn.textContent = 'Submit Event →'; alert('Something went wrong. Please try again.'); });
+}
+</script>
+
+  <div id="site-footer"></div>
+  <script src="../js/layout.js?v=28" data-depth="1"></script>
+  <script>
+
+(function() {
+  var API_URL = "https://pbc-cms-production.up.railway.app";
+  var calYear = new Date().getFullYear();
+  var calMonth = new Date().getMonth();
+  var allEvents = [];
+
+  var CAT_COLORS = {
+    'Community':    '#2e7d32',
+    'Music':        '#6c8ea3',
+    'Sports':       '#e65100',
+    'Government':   '#4a2d7a',
+    'Business':     '#05254c',
+    'Arts & Culture': '#487ea6',
+    'Health':       '#00838f',
+    'Education':    '#1565c0',
+    'Fundraiser':   '#ad1457',
+    'Other':        '#546e7a'
+  };
+
+  function catColor(cat) {
+    return CAT_COLORS[cat] || '#546e7a';
+  }
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function buildLegend() {
+    var el = document.getElementById('cat-legend');
+    if (!el) return;
+    // Only show categories that have events
+    var usedCats = {};
+    allEvents.forEach(function(e) { if (e.category) usedCats[e.category] = true; });
+    var cats = Object.keys(usedCats).sort();
+    if (!cats.length) { el.innerHTML = ''; return; }
+    el.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;">'
+      + '<span style="font-size:11px;font-weight:700;color:#546e7a;text-transform:uppercase;letter-spacing:.06em;">Categories:</span>'
+      + cats.map(function(c) {
+          return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#2c3e50;">'
+            + '<span style="width:12px;height:12px;border-radius:3px;background:' + catColor(c) + ';display:inline-block;flex-shrink:0;"></span>'
+            + c + '</span>';
+        }).join('')
+      + '</div>';
+  }
+
+  function renderCalendar() {
+    var label = document.getElementById('cal-month-label');
+    var grid = document.getElementById('cal-grid');
+    var cardsList = document.getElementById('events-cards');
+    if (!grid) return;
+
+    var monthNames = ['January','February','March','April','May','June',
+      'July','August','September','October','November','December'];
+    if (label) label.textContent = monthNames[calMonth] + ' ' + calYear;
+
+    var firstDay = new Date(calYear, calMonth, 1).getDay();
+    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    // Build lookup
+    var eventsByDate = {};
+    allEvents.forEach(function(e) {
+      var d = (e.event_date || '').slice(0, 10);
+      if (!eventsByDate[d]) eventsByDate[d] = [];
+      eventsByDate[d].push(e);
+    });
+
+    var dows = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    var calHtml = dows.map(function(d) {
+      return '<div class="cal-dow">' + d + '</div>';
+    }).join('');
+
+    var today = new Date();
+    for (var i = 0; i < firstDay; i++) {
+      calHtml += '<div class="cal-day other-month"></div>';
+    }
+
+    for (var day = 1; day <= daysInMonth; day++) {
+      var dateStr = calYear + '-' + pad(calMonth + 1) + '-' + pad(day);
+      var isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === day;
+      var dayEvents = eventsByDate[dateStr] || [];
+      var cls = 'cal-day' + (isToday ? ' today' : '') + (dayEvents.length ? ' has-events' : '');
+
+      // Show up to 3 event title pills in the cell
+      var pills = dayEvents.slice(0, 3).map(function(e) {
+        var color = catColor(e.category);
+        var title = e.title.length > 22 ? e.title.slice(0, 20) + '…' : e.title;
+        return '<div style="background:' + color + ';color:#fff;font-size:10px;font-weight:600;'
+          + 'border-radius:3px;padding:2px 5px;margin-top:3px;line-height:1.3;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'
+          + title + '</div>';
+      }).join('');
+
+      if (dayEvents.length > 3) {
+        pills += '<div style="font-size:10px;color:#546e7a;margin-top:2px;">+' + (dayEvents.length - 3) + ' more</div>';
+      }
+
+      calHtml += '<div class="' + cls + '" data-date="' + dateStr + '">'
+        + '<div class="cal-day-num">' + day + '</div>'
+        + pills
+        + '</div>';
+    }
+
+    grid.innerHTML = calHtml;
+    buildLegend();
+
+    // Click via event delegation
+    grid.onclick = function(e) {
+      var cell = e.target.closest('[data-date]');
+      if (cell && eventsByDate[cell.getAttribute('data-date')]) {
+        showDayEvents(cell.getAttribute('data-date'));
+      }
+    };
+
+    // Show month event cards
+    var monthStr = calYear + '-' + pad(calMonth + 1);
+    var monthEvents = allEvents.filter(function(e) {
+      return (e.event_date || '').startsWith(monthStr);
+    });
+    renderEventCards(monthEvents, monthNames[calMonth] + ' Events');
+  }
+
+  function renderEventCard(e) {
+    var d = new Date(e.event_date + 'T12:00:00');
+    var dateLabel = d.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'});
+    var timeStr = e.event_time ? ' &middot; ' + e.event_time : '';
+    var loc = e.location ? '<div class="event-card-loc"><span>&#128205;</span>' + e.location + '</div>' : '';
+    var desc = e.description ? '<div class="event-card-desc">' + e.description + '</div>' : '';
+    var color = catColor(e.category);
+    var catBadge = e.category ? '<div class="event-card-cat" style="background:' + color + '">' + e.category + '</div>' : '';
+    var link = e.url ? '<a href="' + e.url + '" target="_blank" class="event-card-link">More Info &rsaquo;</a>' : '';
+    return '<div class="event-card" style="border-left-color:' + color + '">'
+      + '<div class="event-card-date">' + dateLabel + timeStr + '</div>'
+      + catBadge
+      + '<div class="event-card-title">' + e.title + '</div>'
+      + loc + desc + link
+      + '</div>';
+  }
+
+  function renderEventCards(events, title) {
+    var cardsList = document.getElementById('events-cards');
+    var titleEl = document.getElementById('events-list-title');
+    if (titleEl) titleEl.textContent = title || 'Events';
+    if (!cardsList) return;
+    if (!events.length) {
+      cardsList.innerHTML = '<div class="no-results">No events this month.</div>';
+    } else {
+      cardsList.innerHTML = events.map(renderEventCard).join('');
+    }
+  }
+
+  window.showDayEvents = function(dateStr) {
+    var dayEvents = allEvents.filter(function(e) {
+      return (e.event_date || '').slice(0,10) === dateStr;
+    });
+    var d = new Date(dateStr + 'T12:00:00');
+    var title = d.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
+    renderEventCards(dayEvents, title);
+  };
+
+  var prev = document.getElementById('prev-month');
+  var next = document.getElementById('next-month');
+  if (prev) prev.addEventListener('click', function() {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
+  });
+  if (next) next.addEventListener('click', function() {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
+  });
+
+  // Render empty calendar immediately
+  renderCalendar();
+
+  // Fetch and re-render with data
+  fetch(API_URL + '/api/events?limit=500')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      allEvents = Array.isArray(data) ? data : (data.items || data.data || []);
+      renderCalendar();
+    })
+    .catch(function() {});
+})();
+
+
+  </script>
+<script>
+(function() {
+  var s = document.getElementById('pbc-page-bg');
+  if (!s) { s = document.createElement('style'); s.id = 'pbc-page-bg'; document.head.appendChild(s); }
+  s.textContent = 'body, .page-hero, .content-wrap, .schedule-wrap, #shows-content { background: #f8f9fa !important; }';
+})();
+</script>
+<script src="../js/player.js?v=14"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+</body>
+</html>
