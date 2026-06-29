@@ -244,6 +244,8 @@ nav.main-nav { background: #eef5fa !important; }
 .on-air-badge, .listen-btn, .hero-listen, .sc-btn { background: #487ea6 !important; }
 .listen-btn:hover, .hero-listen:hover, .sc-btn:hover { background: #315f83 !important; }
 .section-link, .news-card-cat, .schedule-time, .show-card-link, .show-card-times { color: #487ea6 !important; }
+nav.main-nav .nav-links li a:hover { color: #a04da6 !important; }
+nav.main-nav .nav-links li a.active { color: #a04da6 !important; border-bottom-color: #a04da6 !important; }
 .schedule-card { border-left-color: #487ea6 !important; }
 footer { background: #504395 !important; }
 .footer-col-title { border-bottom-color: #487ea6 !important; }
