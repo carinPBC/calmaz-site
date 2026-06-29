@@ -349,7 +349,7 @@
       // On inner pages only: inject on-air bar after the nav
       var isHome = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
       if (!isHome && !document.getElementById('on-air-bar')) {
-        var onAirHtml = '<div class="on-air-bar" id="on-air-bar" style="display:none;padding-bottom:12px;">'
+        var onAirHtml = '<div class="on-air-bar" id="on-air-bar" style="display:none;">'
           + '<span class="on-air-badge">On Air Now</span>'
           + '<span class="on-air-show" id="on-air-show"></span>'
           + '<span class="on-air-host" id="on-air-host"></span>'
