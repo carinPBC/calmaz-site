@@ -375,14 +375,11 @@
     if (!isOpen) {
       isOpen = true;
       localStorage.setItem(STORAGE_KEY, '1');
-      // Load StreamGuys player as the visible audio player
+      // Use direct stream for playback; SG iframe loads silently for contract
       if (!skipAudio) {
         sgIframe.src = STREAMGUYS_URL;
-        sgIframe.style.height = '160px';
-        // Hide custom audio controls — StreamGuys handles playback
-        var audioMode = document.getElementById('calmaz-audio-mode');
-        if (audioMode) audioMode.style.display = 'none';
-        isPlaying = true;
+        sgIframe.style.height = '1px';
+        startAudio();
       }
     }
     widget.classList.add('visible');
