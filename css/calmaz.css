@@ -16,7 +16,8 @@ body { background: #f5f8fb !important; }
 
 /* Nav */
 nav.main-nav { background: var(--cream) !important; }
-.nav-logo img { height: 120px; }
+.nav-logo img { height: 180px !important; }
+.nav-logo { padding: 12px 0; }
 
 /* Listen Live button */
 .listen-btn {
@@ -271,3 +272,40 @@ footer { background: #504395 !important; }
 .footer-col-title { border-bottom-color: #487ea6 !important; }
 .footer-contact a { color: #b7d5e8 !important; }
 #calmaz-weather-band, #calmaz-weather-report { background: #504395 !important; }
+
+/* ── APP DOWNLOAD STRIP ──────────────────────────────────────────────────── */
+.nav-app-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 2px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.nav-app-cta {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(26,47,78,0.55);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-right: 2px;
+  white-space: nowrap;
+}
+.nav-app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #504395;
+  color: #fff !important;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.nav-app-btn:hover { background: #3a3075; }
+@media (max-width: 900px) { .nav-app-strip { display: none; } }

@@ -69,6 +69,17 @@
       +       '</div>'
       +     '</div>'
       +     '<div class="nav-social">'+socialHTML(cfg.site.social)+'</div>'
+      +     '<div class="nav-app-strip">'
+      +       '<span class="nav-app-cta">Stream on mobile</span>'
+      +       '<a href="https://apps.apple.com/ph/app/calm-arizona/id6477713250" target="_blank" rel="noopener" class="nav-app-btn nav-app-apple">'
+      +         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>'
+      +         ' App Store'
+      +       '</a>'
+      +       '<a href="https://play.google.com/store/apps/details?id=com.pivotradio.calmarz&hl=en_US" target="_blank" rel="noopener" class="nav-app-btn nav-app-android">'
+      +         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3.18 23.76a2 2 0 0 0 2.76.73l9.38-5.4-2.59-2.6-9.55 7.27zM20.82 10.3L17.53 8.4l-2.91 2.9 2.91 2.9 3.31-1.9a1.76 1.76 0 0 0 0-3.07v.07zm-17.64-8A1.75 1.75 0 0 0 2.5 4v16a1.75 1.75 0 0 0 .68 1.68l.1.07 8.96-8.96v-.21L3.18 2.3zm10.44 9.07l-9.38-5.4A2 2 0 0 0 1.44.24L10.99 7.5l2.63-2.63v16.26z"/></svg>'
+      +         ' Google Play'
+      +       '</a>'
+      +     '</div>'
       +   '</div>'
       + '</div>'      + '</nav>';
   }
