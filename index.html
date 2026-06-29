@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="images/logo-calmaz.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/calmaz-base.css?v=29" />
-  <link rel="stylesheet" href="css/calmaz.css?v=38" />
+  <link rel="stylesheet" href="css/calmaz.css?v=39" />
   <style id="nav-critical">
     nav.main-nav{background:#fff7ec !important;position:relative !important;top:auto !important;z-index:auto !important;}
     .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:150px;}
@@ -211,15 +211,8 @@
           if (typeof setStickyOffsets === 'function') setTimeout(setStickyOffsets, 50);
         }).catch(function(){});
     }
-    // Wait for layout.js to inject the bar element, then run
-    function waitForBarAndRun() {
-      if (document.getElementById('on-air-bar')) {
-        updateHomeOnAirBar();
-      } else {
-        setTimeout(waitForBarAndRun, 100);
-      }
-    }
-    waitForBarAndRun();
+    // Expose globally so window.load handler can call it
+    window.updateHomeOnAirBar = updateHomeOnAirBar;
     if (!window.CALMAZ_HOME_ON_AIR_TIMER) window.CALMAZ_HOME_ON_AIR_TIMER = setInterval(updateHomeOnAirBar, 60000);
     window.addEventListener('focus', updateHomeOnAirBar);
     document.addEventListener('visibilitychange', function(){ if (!document.hidden) updateHomeOnAirBar(); });
@@ -317,6 +310,12 @@
 })();
 </script>
 <script src="js/player.js?v=14"></script>
+  <script>
+  // Fire on-air bar after full page load — guarantees layout.js has built the DOM
+  window.addEventListener('load', function() {
+    if (typeof window.updateHomeOnAirBar === 'function') window.updateHomeOnAirBar();
+  });
+  </script>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
 
 <script>

@@ -261,7 +261,7 @@ body { background: #f5f8fb !important; }
 nav.main-nav { background: #eef5fa !important; }
 .nav-logo img { height: 120px !important; }
 .on-air-bar { background: #504395 !important; }
-.on-air-badge, .listen-btn, .hero-listen, .sc-btn { background: #487ea6 !important; }
+.listen-btn, .hero-listen, .sc-btn { background: #487ea6 !important; }
 .listen-btn:hover, .hero-listen:hover, .sc-btn:hover { background: #315f83 !important; }
 .section-link, .schedule-time, .show-card-link, .show-card-times { color: #487ea6 !important; }
 nav.main-nav .nav-links li a:hover { color: #a04da6 !important; }
