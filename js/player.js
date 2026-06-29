@@ -328,17 +328,26 @@
   volSlider.value = savedVol;
 
   function startAudio() {
+    // Don't call load() — it breaks the user gesture chain needed for autoplay
+    // Just set src and play() directly; works for live streams
     audio.src = STREAM_URL;
-    audio.load();
-    audio.play().then(function() {
+    var p = audio.play();
+    if (p !== undefined) {
+      p.then(function() {
+        isPlaying = true;
+        playBtn.innerHTML = '&#9646;&#9646;';
+        trackLabel.textContent = 'Live';
+      }).catch(function(e) {
+        // Autoplay blocked — show play button, user can tap
+        isPlaying = false;
+        playBtn.innerHTML = '&#9654;';
+        trackLabel.textContent = 'Tap to play';
+      });
+    } else {
       isPlaying = true;
       playBtn.innerHTML = '&#9646;&#9646;';
-      trackLabel.textContent = 'Live Stream';
-    }).catch(function() {
-      isPlaying = false;
-      playBtn.innerHTML = '&#9654;';
-      trackLabel.textContent = 'Click play to listen';
-    });
+      trackLabel.textContent = 'Live';
+    }
   }
 
   function stopAudio() {
