@@ -31,16 +31,46 @@
   },
   "nav": {
     "links": [
-      { "label": "Home", "url": "/index.html" },
-      { "label": "News", "url": "/pages/news.html" },
-      { "label": "Events", "url": "/pages/events.html" },
-      { "label": "Podcasts", "url": "/pages/podcasts.html" },
-      { "label": "Schedule", "url": "/pages/schedule.html" },
-      { "label": "Shows", "url": "/pages/shows.html" },
-      { "label": "Advertise", "url": "/pages/advertise.html" },
-      { "label": "About", "url": "/pages/about.html" },
-      { "label": "FCC Applications", "url": "/pages/fcc.html" },
-      { "label": "Contact", "url": "/pages/contact.html" }
+      {
+        "label": "Home",
+        "url": "/index.html"
+      },
+      {
+        "label": "News",
+        "url": "/pages/news.html"
+      },
+      {
+        "label": "Events",
+        "url": "/pages/events.html"
+      },
+      {
+        "label": "Podcasts",
+        "url": "/pages/podcasts.html"
+      },
+      {
+        "label": "Schedule",
+        "url": "/pages/schedule.html"
+      },
+      {
+        "label": "Shows",
+        "url": "/pages/shows.html"
+      },
+      {
+        "label": "Advertise",
+        "url": "/pages/advertise.html"
+      },
+      {
+        "label": "About",
+        "url": "/pages/about.html"
+      },
+      {
+        "label": "FCC Applications",
+        "url": "/pages/fcc.html"
+      },
+      {
+        "label": "Contact",
+        "url": "/pages/contact.html"
+      }
     ]
   },
   "footer": {
@@ -48,16 +78,34 @@
       {
         "title": "Station Info",
         "links": [
-          { "label": "About", "url": "pages/about.html" },
-          { "label": "Shows", "url": "pages/shows.html" },
-          { "label": "FCC Applications", "url": "pages/fcc.html" },
-          { "label": "Employment", "url": "pages/employment.html" },
-          { "label": "Archive", "url": "pages/archive.html" },
-          { "label": "Prescott Broadcasting", "url": "https://prescottbroadcasting.com" },
-          { "label": "Public Inspection File", "url": "https://publicfiles.fcc.gov/fm-profile/kahm" },
-          { "label": "Public Inspection File Help", "url": "pages/public-inspection-help.html" },
-          { "label": "EEO", "url": "pages/eeo.html" },
-          { "label": "CMS Login", "url": "https://pbc-cms-production.up.railway.app/admin/" }
+          {
+            "label": "About",
+            "url": "pages/about.html"
+          },
+          {
+            "label": "Shows",
+            "url": "pages/shows.html"
+          },
+          {
+            "label": "FCC Applications",
+            "url": "pages/fcc.html"
+          },
+          {
+            "label": "Employment",
+            "url": "pages/employment.html"
+          },
+          {
+            "label": "Archive",
+            "url": "pages/archive.html"
+          },
+          {
+            "label": "Prescott Broadcasting",
+            "url": "https://prescottbroadcasting.com"
+          },
+          {
+            "label": "CMS Login",
+            "url": "https://pbc-cms-production.up.railway.app/admin/"
+          }
         ]
       }
     ],
