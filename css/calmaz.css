@@ -260,10 +260,10 @@ nav.main-nav { position: relative !important; top: auto !important; }
 /* CALMAZ brand finish */
 body { background: #f5f8fb !important; }
 nav.main-nav { background: #eef5fa !important; }
-.nav-logo img { height: 120px !important; }
+.nav-logo img { height: 200px !important; }
 .on-air-bar { background: #504395 !important; }
-.listen-btn, .hero-listen, .sc-btn { background: #487ea6 !important; }
-.listen-btn:hover, .hero-listen:hover, .sc-btn:hover { background: #315f83 !important; }
+.listen-btn, .hero-listen, .sc-btn { background: #b7048b !important; }
+.listen-btn:hover, .hero-listen:hover, .sc-btn:hover { background: #8c0368 !important; }
 .section-link, .schedule-time, .show-card-link, .show-card-times { color: #487ea6 !important; }
 nav.main-nav .nav-links li a:hover { color: #a04da6 !important; }
 nav.main-nav .nav-links li a.active { color: #a04da6 !important; border-bottom-color: #a04da6 !important; }
