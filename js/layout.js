@@ -481,7 +481,7 @@
         if (!bar) return;
         if (!tracks || !tracks.length) { bar.style.display = 'none'; setStickyOffsets(); return; }
         var t = tracks[0];
-        function tc(s) { return (s||'').toLowerCase().replace(/\b\w/g, function(c){ return c.toUpperCase(); }); }
+        function tc(s) { return (s||'').toLowerCase().replace(/(^|\s)(\S)/g, function(m, s1, s2){ return s1 + s2.toUpperCase(); }); }
         var showEl = document.getElementById('on-air-show');
         var hostEl = document.getElementById('on-air-host');
         var timeEl = document.getElementById('on-air-time');

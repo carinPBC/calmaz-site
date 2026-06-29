@@ -160,13 +160,13 @@
   </style>
 
   <div id="site-footer"></div>
-  <script src="js/layout.js?v=6" data-depth="0"></script>
+  <script src="js/layout.js?v=7" data-depth="0"></script>
   <script>
   // ── HOMEPAGE ON-AIR BAR — standalone, no dependency on Promise chain ──────
   (function() {
     var CMS = 'https://pbc-cms-production.up.railway.app';
     function tc(s) {
-      return (s || '').toLowerCase().replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+      return (s || '').toLowerCase().replace(/(^|\s)(\S)/g, function(m, s1, s2) { return s1 + s2.toUpperCase(); });
     }
     function updateBar() {
       var bar = document.getElementById('on-air-bar');
