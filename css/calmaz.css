@@ -194,6 +194,25 @@ nav.main-nav { background: var(--cream) !important; }
 .info-table tr:hover td { background: #f9f9f9; }
 .info-table a { color: var(--accent); font-weight: 600; }
 
+
+/* ── BG CONSISTENCY — all containers match body #f5f8fb ─────────────────── */
+.content-wrap,
+.editorial-section,
+.inquiry-section,
+.psa-section,
+.event-submit-section,
+.page-hero,
+.cards-section,
+.schedule-wrap,
+.hero { background: #f5f8fb !important; }
+
+/* Contact info card — swap old navy for purple */
+.contact-info-block { background: #504395 !important; }
+
+/* CTA buttons that used old navy */
+.editorial-cta { background: #504395 !important; }
+.editorial-cta:hover { background: #3a3075 !important; }
+
 /* Responsive */
 @media (max-width: 768px) {
   .on-air-bar { padding: 12px 20px; flex-wrap: wrap; gap: 8px; }
