@@ -47,8 +47,11 @@
       return isPageActive(cfg, pageKeyFromUrl(l.url));
     }).map(function(l) {
       var href = root + l.url.replace(/^\//, '');
-      var active = window.location.pathname.endsWith(l.url.replace(/^\//, '')) ||
-                   (l.url === '/index.html' && (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')));
+      var _lu = l.url.replace(/^\//, '');
+      var _pn = window.location.pathname;
+      var active = _pn.endsWith(_lu) ||
+                   (_lu === 'index.html' && (_pn === '/' || _pn.endsWith('/'))) ||
+                   (_pn.endsWith('/') && _lu === 'index.html');
       return '<li><a href="'+href+'"'+(active?' class="active"':'')+'>'+l.label+'</a></li>';
     }).join('');
 
@@ -290,7 +293,7 @@
   Promise.all([
     fetch(root + CFG_URL).then(function(r) { return r.json(); }),
     fetch(API + '/api/station-globals/calmaz').then(function(r) { return r.json(); }).catch(function() { return {}; }),
-    fetch(API + '/api/theme').then(function(r) { return r.json(); }).catch(function() { return {}; })
+    fetch(API + '/api/theme?station=calmaz').then(function(r) { return r.json(); }).catch(function() { return {}; })
   ]).then(function(results) {
     var cfg = results[0];
     var globals = results[1];
@@ -388,6 +391,12 @@
     if (!window.location.pathname.endsWith("index.html") && window.location.pathname !== "/") initOnAirBar();
 
     initSearch(root);
+    // Merge station_globals nav overrides into theme (station_globals wins)
+    if (globals.nav_active)   theme.nav_active   = globals.nav_active;
+    if (globals.nav_hover)    theme.nav_hover    = globals.nav_hover;
+    if (globals.nav_underline !== undefined) theme.nav_underline = globals.nav_underline;
+    if (globals.nav_bg)       theme.nav_bg       = globals.nav_bg;
+    if (globals.footer_bg)    theme.footer_bg    = globals.footer_bg;
     applyTheme(theme);
     initAdBanner();
     initWeatherReport(globals);
