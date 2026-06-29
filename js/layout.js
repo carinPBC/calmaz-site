@@ -342,7 +342,7 @@
           + '<span class="on-air-badge">On Air Now</span>'
           + '<span class="on-air-show" id="on-air-show"></span>'
           + '<span class="on-air-host" id="on-air-host"></span>'
-          + '<span class="on-air-time" id="on-air-time"></span>'
+          + ''  // time omitted
           + '<div style="display:flex;gap:10px;margin-left:auto;flex-shrink:0;align-items:center;">'
           + '<a href="#" data-listen="calmaz" style="display:inline-flex;align-items:center;gap:6px;background:#a04da6;color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;">&#9654; Listen Live</a>'
           + '<button id="watch-live-btn" style="display:none;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap;border:1px solid rgba(255,255,255,.3);">&#128250; Watch Live</button>'
@@ -383,7 +383,7 @@
 
       // Remove individual sticky from children - parent handles it
       nav.style.position = 'relative';
-      if (onAir) onAir.style.cssText = onAir.style.cssText.replace(/top:[^;]+;?/g, '');
+      // Don't touch onAir cssText — display:flex is set by updateHomeOnAirBar after fetch
       if (weather) weather.style.cssText = weather.style.cssText.replace(/top:[^;]+;?/g, '');
     }, 50);
     if (footerEl) footerEl.innerHTML = buildFooter(cfg);
@@ -476,7 +476,7 @@
         var timeEl = document.getElementById('on-air-time');
         if (showEl) showEl.textContent = tc(t.title || '');
         if (hostEl) hostEl.textContent = tc(t.artist || '');
-        if (timeEl) timeEl.textContent = t.localtime || '';
+        // time intentionally omitted
         bar.style.display = 'flex';
         setStickyOffsets();
       })
