@@ -3,8 +3,8 @@
  * Persists across page navigation via localStorage
  */
 (function() {
-  var STREAM_URL       = '';
-  var STREAMGUYS_URL   = '';
+  var STREAM_URL       = 'https://www.streamvortex.com:8444/s/12000';
+  var STREAMGUYS_URL   = 'https://player.streamguys.com/prescott/kahm/sgplayer/player.php';
   var API_URL          = 'https://pbc-cms-production.up.railway.app';
   var STORAGE_KEY      = 'calmaz_player_open';
   var VOL_KEY          = 'calmaz_volume';
@@ -18,7 +18,7 @@
       bottom: -420px;
       right: 24px;
       width: 320px;
-      background: #05254c;
+      background: #b7048b;
       border-radius: 12px 12px 0 0;
       box-shadow: 0 -4px 32px rgba(0,0,0,0.45);
       z-index: 99999;
@@ -35,8 +35,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 14px;
-      background: #021d35;
-      border-bottom: 2px solid #487ea6;
+      background: #8c0368;
+      border-bottom: 2px solid #d63fad;
       cursor: pointer;
       user-select: none;
     }
@@ -54,7 +54,7 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      background: #487ea6;
+      background: #d63fad;
       color: #fff;
       font-size: 9px;
       font-weight: 800;
@@ -117,7 +117,7 @@
       display: none;
       align-items: center;
       gap: 5px;
-      background: #487ea6;
+      background: #d63fad;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -132,7 +132,7 @@
       transition: background .15s;
       animation: calmaz-pulse-btn 2s ease-in-out infinite;
     }
-    #calmaz-watch-live-btn:hover { background: #315f83; animation: none; }
+    #calmaz-watch-live-btn:hover { background: #a02585; animation: none; }
     @keyframes calmaz-pulse-btn {
       0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.5); }
       50%      { box-shadow: 0 0 0 6px rgba(192,57,43,0); }
@@ -164,12 +164,12 @@
       align-items: center;
       gap: 12px;
       padding: 14px 16px;
-      background: #021d35;
+      background: #8c0368;
     }
     #calmaz-play-btn {
       width: 42px; height: 42px;
       border-radius: 50%;
-      background: #487ea6;
+      background: #d63fad;
       border: none;
       cursor: pointer;
       color: #fff;
@@ -178,7 +178,7 @@
       flex-shrink: 0;
       transition: background .15s, transform .1s;
     }
-    #calmaz-play-btn:hover { background: #315f83; transform: scale(1.07); }
+    #calmaz-play-btn:hover { background: #a02585; transform: scale(1.07); }
     #calmaz-audio-info { flex: 1; min-width: 0; }
     #calmaz-track-label {
       font-size: 12px;
@@ -213,13 +213,13 @@
       -webkit-appearance: none;
       width: 12px; height: 12px;
       border-radius: 50%;
-      background: #487ea6;
+      background: #d63fad;
       cursor: pointer;
     }
     #calmaz-vol::-moz-range-thumb {
       width: 12px; height: 12px;
       border-radius: 50%;
-      background: #487ea6;
+      background: #d63fad;
       border: none;
     }
     #calmaz-player-widget.video-mode #calmaz-audio-mode { display: none; }
