@@ -6,8 +6,8 @@
   <title>CalmArizona — Music Beautiful as Prescott</title>
   <link rel="icon" type="image/png" href="images/logo-calmaz.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/calmaz-base.css?v=28" />
-  <link rel="stylesheet" href="css/calmaz.css?v=28" />
+  <link rel="stylesheet" href="css/calmaz-base.css?v=29" />
+  <link rel="stylesheet" href="css/calmaz.css?v=29" />
   <style id="nav-critical">
     nav.main-nav{background:#fff7ec !important;position:relative !important;top:auto !important;z-index:auto !important;}
     .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:150px;}
@@ -23,8 +23,8 @@
   <div id="site-header"></div>
   
   <!-- HERO CAROUSEL -->
-  <section id="hero-section" style="width:100%;background:#05254c;padding:40px 0;border-bottom:3px solid rgba(255,255,255,0.12);">
-    <div id="calmaz-carousel-wrap" style="width:75%;margin:0 auto;position:relative;border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.35);background:#031e36;min-height:200px;">
+  <section id="hero-section" style="width:100%;background:#504395;padding:40px 0;border-bottom:3px solid rgba(255,255,255,0.12);">
+    <div id="calmaz-carousel-wrap" style="width:75%;margin:0 auto;position:relative;border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.35);background:#504395;min-height:200px;">
 
       <!-- Slides container -->
       <div id="calmaz-carousel-slides" style="display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);will-change:transform;"></div>
@@ -42,7 +42,7 @@
       <div id="calmaz-carousel-dots" style="display:none;position:absolute;bottom:10px;right:14px;display:flex;gap:6px;z-index:10;"></div>
 
       <!-- Placeholder while loading -->
-      <div id="calmaz-carousel-placeholder" style="width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:#031e36;">
+      <div id="calmaz-carousel-placeholder" style="width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:#504395;">
         <span style="color:rgba(255,255,255,0.25);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Loading&hellip;</span>
       </div>
     </div>
@@ -64,11 +64,11 @@
 
 
   <!-- WEATHER BAND -->
-  <div id="calmaz-weather-band" style="background:#05254c;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
+  <div id="calmaz-weather-band" style="background:#504395;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;height:120px;display:flex;align-items:center;">
     <div style="flex:1;overflow:hidden;height:95px;position:relative;margin-top:4px;">
       <a class="weatherwidget-io" href="https://forecast7.com/en/34d54n112d47/prescott/?unit=us" data-label_1="PRESCOTT" data-label_2="WEATHER" data-theme="original" data-basecolor="#05254c" data-days="7">PRESCOTT WEATHER</a>
     </div>
-    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#05254c;">
+    <div id="calmaz-weather-report" style="flex-shrink:0;display:none;align-items:center;gap:8px;padding:0 20px;border-left:1px solid rgba(255,255,255,0.1);min-width:520px;background:#504395;">
       <span style="font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);">&#127925; Today&#39;s Report</span>
       <div id="calmaz-weather-player"></div>
     </div>
@@ -91,7 +91,7 @@
     </section>
 
     <!-- RIGHT 1/3: Video sidebar -->
-    <div id="home-video-sidebar" style="background:#05254c;padding:24px 20px;display:flex;flex-direction:column;gap:24px;align-self:stretch;">
+    <div id="home-video-sidebar" style="background:#504395;padding:24px 20px;display:flex;flex-direction:column;gap:24px;align-self:stretch;">
 
       <!-- Courthouse Cam (hidden until enabled) -->
       <div style="display:none;">
@@ -255,7 +255,7 @@
       if (heroSection) {
         heroSection.style.minHeight = '';
         heroSection.style.display = 'block';
-        heroSection.style.background = '#05254c';
+        heroSection.style.background = '#504395';
         heroSection.innerHTML = '<img src="' + heroSrc + '" alt="CALMAZ" style="width:100%;display:block;height:auto;" onerror="this.style.display=\'none\'" />';
       }
     }

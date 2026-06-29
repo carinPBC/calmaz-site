@@ -8,8 +8,8 @@ body { background: #f5f8fb !important; }
 :root {
   --accent:    #487ea6;
   --accent2:   #315f83;
-  --navy:      #05254c;
-  --navy2:     #0b253f;
+  --navy:      #504395;
+  --navy2:     #3a3075;
   --cream:     #fff7ec;
   --max-width: 1600px;
 }
@@ -240,12 +240,12 @@ nav.main-nav { position: relative !important; top: auto !important; }
 body { background: #f5f8fb !important; }
 nav.main-nav { background: #eef5fa !important; }
 .nav-logo img { height: 120px !important; }
-.on-air-bar { background: #05254c !important; }
+.on-air-bar { background: #504395 !important; }
 .on-air-badge, .listen-btn, .hero-listen, .sc-btn { background: #487ea6 !important; }
 .listen-btn:hover, .hero-listen:hover, .sc-btn:hover { background: #315f83 !important; }
 .section-link, .news-card-cat, .schedule-time, .show-card-link, .show-card-times { color: #487ea6 !important; }
 .schedule-card { border-left-color: #487ea6 !important; }
-footer { background: #05254c !important; }
+footer { background: #504395 !important; }
 .footer-col-title { border-bottom-color: #487ea6 !important; }
 .footer-contact a { color: #b7d5e8 !important; }
-#calmaz-weather-band, #calmaz-weather-report { background: #05254c !important; }
+#calmaz-weather-band, #calmaz-weather-report { background: #504395 !important; }
