@@ -92,8 +92,9 @@ nav.main-nav { background: var(--cream) !important; }
   flex-shrink: 0;
 }
 .on-air-show { font-size: 15px; font-weight: 700; }
-.on-air-host { font-size: 13px; color: rgba(255,255,255,.65); margin-left: 4px; }
-.on-air-time { font-size: 12px; color: rgba(255,255,255,.5); margin-left: auto; }
+.on-air-host { font-size: 13px; color: rgba(255,255,255,.65); margin-left: 0; }
+.on-air-host:not(:empty)::before { content: ' · '; color: rgba(255,255,255,.35); }
+.on-air-time { font-size: 11px; color: rgba(255,255,255,.4); margin-left: auto; }
 
 /* Section headers */
 .section-header {

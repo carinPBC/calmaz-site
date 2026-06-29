@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="images/logo-calmaz.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/calmaz-base.css?v=29" />
-  <link rel="stylesheet" href="css/calmaz.css?v=34" />
+  <link rel="stylesheet" href="css/calmaz.css?v=35" />
   <style id="nav-critical">
     nav.main-nav{background:#fff7ec !important;position:relative !important;top:auto !important;z-index:auto !important;}
     .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:150px;}
@@ -50,7 +50,7 @@
 
   <!-- ON AIR BAR -->
   <div class="on-air-bar" id="on-air-bar" style="display:none;padding-bottom:12px;">
-    <span class="on-air-badge">On Air Now</span>
+    <span class="on-air-badge">Now Playing</span>
     <span class="on-air-show" id="on-air-show"></span>
     <span class="on-air-host" id="on-air-host"></span>
     <span class="on-air-time" id="on-air-time"></span>
@@ -193,47 +193,23 @@
 
     // ── ON AIR — from real schedule ────────────────────────────
     function updateHomeOnAirBar() {
-      fetch(API + '/api/schedule/calmaz').then(function(r){return r.json();}).then(function(d) {
-        var slots = d.slots || [];
-        var now = new Date();
-        var nowH = now.getHours();
-        var dow = now.getDay();
-        var todayGroup = dow === 0 ? 'sun' : dow === 6 ? 'sat' : dow === 1 ? 'mon' : 'tue-fri';
-        var current = slots.find(function(sl) {
-          return sl.day_group === todayGroup && sl.start_hour <= nowH && sl.end_hour > nowH;
-        });
-        if (!current && todayGroup === 'mon') {
-          current = slots.find(function(sl) {
-            return sl.day_group === 'tue-fri' && sl.start_hour <= nowH && sl.end_hour > nowH;
-          });
-        }
-        var bar = document.getElementById('on-air-bar');
-        var watchBtn = document.getElementById('watch-live-btn');
-        if (!current) {
-          if (bar) bar.style.display = 'none';
-          if (watchBtn) { watchBtn.style.display = 'none'; watchBtn.removeAttribute('data-video-url'); }
-          window.CALMAZ_CURRENT_VIDEO_URL = null;
+      fetch(CMS_API + '/api/recent-tracks/kahm?ts=' + Date.now())
+        .then(function(r) { return r.json(); })
+        .then(function(tracks) {
+          var bar = document.getElementById('on-air-bar');
+          if (!bar) return;
+          if (!tracks || !tracks.length) { bar.style.display = 'none'; return; }
+          var t = tracks[0];
+          var title = (t.title || '').replace(/\^$/, '').trim();
+          var artist = (t.artist || '').trim();
+          // Title case helper
+          function tc(s) { return s.toLowerCase().replace(/\w/g, function(c){ return c.toUpperCase(); }); }
+          document.getElementById('on-air-show').textContent = tc(title);
+          document.getElementById('on-air-host').textContent = tc(artist);
+          document.getElementById('on-air-time').textContent = t.localtime || '';
+          bar.style.display = 'flex';
           if (typeof setStickyOffsets === 'function') setTimeout(setStickyOffsets, 50);
-          return;
-        }
-        function fmtH(h) { if(h===0)return'12:00 AM'; if(h===12)return'12:00 PM'; return h<12?h+':00 AM':(h-12)+':00 PM'; }
-        document.getElementById('on-air-show').textContent = current.name;
-        document.getElementById('on-air-host').textContent = '';
-        document.getElementById('on-air-time').textContent = fmtH(current.start_hour) + ' – ' + fmtH(current.end_hour);
-        if (bar) bar.style.display = 'flex';
-        if (watchBtn) {
-          if (current.video_url) {
-            watchBtn.style.display = 'inline-flex';
-            watchBtn.setAttribute('data-video-url', current.video_url);
-            window.CALMAZ_CURRENT_VIDEO_URL = current.video_url;
-          } else {
-            watchBtn.style.display = 'none';
-            watchBtn.removeAttribute('data-video-url');
-            window.CALMAZ_CURRENT_VIDEO_URL = null;
-          }
-        }
-        if (typeof setStickyOffsets === 'function') setTimeout(setStickyOffsets, 50);
-      }).catch(function(){});
+        }).catch(function(){});
     }
     updateHomeOnAirBar();
     if (!window.CALMAZ_HOME_ON_AIR_TIMER) window.CALMAZ_HOME_ON_AIR_TIMER = setInterval(updateHomeOnAirBar, 60000);
