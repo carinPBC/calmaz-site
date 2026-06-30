@@ -27,7 +27,7 @@
     #podcasts-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;}
     .pod-show-card{display:block;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);text-decoration:none;transition:transform .2s,box-shadow .2s;}
     .pod-show-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.13);}
-    .pod-card{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);text-decoration:none;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
+    .pod-card{background:transparent;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);text-decoration:none;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
     .pod-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.13);}
     .pod-thumb{width:100%;aspect-ratio:1;object-fit:cover;background:#e8ecf0;display:block;}
     .pod-thumb-placeholder{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#05254c,#6c8ea3);display:flex;align-items:center;justify-content:center;font-size:48px;}
@@ -111,7 +111,7 @@ function renderSection(s, i) {
   if (s.body_align) bStyle += 'text-align:' + s.body_align + ';';
 
   // Section bg
-  var secStyle = s.bg_color ? 'background:' + s.bg_color + ';' : '';
+  var secStyle = ''; // bg controlled by page CMS bg_color
 
   // CTA
   var ctaStyle = s.cta_color ? 'color:' + s.cta_color + ' !important;border-color:' + s.cta_color + ' !important;background:transparent !important;' : '';
