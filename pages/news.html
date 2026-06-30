@@ -6,7 +6,7 @@
   <title>News — CalmArizona</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/calmaz-base.css?v=29" />
-  <link rel="stylesheet" href="../css/calmaz.css?v=47" />
+  <link rel="stylesheet" href="../css/calmaz.css?v=48" />
   <style id="nav-critical">
     nav.main-nav{background:#fff7ec !important;position:sticky !important;top:0 !important;z-index:9999 !important;}
     .main-nav-inner{width:100%;padding:0 48px;display:flex;align-items:center;justify-content:space-between;min-height:100px;}
@@ -28,7 +28,7 @@
     .news-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px; }
     .news-card { background:#504395;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.15);overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:pointer; }
     .news-card:hover { transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.25); }
-    .news-card-img { width:calc(100% - 24px);height:160px;object-fit:cover;background:#fff;display:block;border-radius:6px;margin:12px auto 0; }
+    .news-card-img { width:calc(100% - 24px);height:auto;max-height:220px;object-fit:contain;background:#fff;display:block;border-radius:6px;margin:12px auto 0; }
     .news-card-body { padding:16px; }
     .news-cat { font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#c9a8f5;margin-bottom:6px; }
     .news-headline { font-size:15px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px; }
