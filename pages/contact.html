@@ -212,7 +212,7 @@ function renderSection(s, i) {
   if (s.body_align) bStyle += 'text-align:' + s.body_align + ';';
 
   // Section bg
-  var secStyle = ''; // bg controlled by page CMS bg_color
+  var secStyle = s.bg_color ? 'background:' + s.bg_color + ';' : '';
 
   // CTA
   var ctaStyle = s.cta_color ? 'color:' + s.cta_color + ' !important;border-color:' + s.cta_color + ' !important;background:transparent !important;' : '';
