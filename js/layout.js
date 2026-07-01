@@ -267,7 +267,7 @@
           var ad = ads[0];
           var src = ad.image.startsWith('http') ? ad.image : ad.image.startsWith('/uploads/') ? 'https://pbc-cms-production.up.railway.app' + ad.image : 'https://pbc-cms-production.up.railway.app/uploads/' + ad.image.split('/').pop();
           if (ad.link_url) {
-            banner.innerHTML = '<a id="calmaz-ad-link" href="' + ad.link_url + '" target="_blank" rel="noopener" style="display:inline-block;">'
+            banner.innerHTML = '<a id="calmaz-ad-link" href="https://pbc-cms-production.up.railway.app/api/track/click?station=calmaz&type=ad&label='+encodeURIComponent(ad.label||ad.link_url||'')+'&url='+encodeURIComponent(ad.link_url)+'"' target="_blank" rel="noopener" style="display:inline-block;">'
               + '<img id="calmaz-ad-img" src="' + src + '" alt="Advertisement" style="max-width:100%;height:auto;display:inline-block;" />'
               + '</a>';
           } else {
